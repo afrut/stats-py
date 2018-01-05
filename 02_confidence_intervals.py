@@ -8,6 +8,25 @@ sp.call( 'cls', shell=True )    # clear screen
 
 # ----------------------------------------------------------------------
 # 
+# If estimating the population mean is analogous to spear-fishing,
+# confidence intervals are analogous to net fishing. They give a range
+# of values that may contain the mean at a specific confidence level.
+# They give an idea of how the sample mean varies around the true
+# population mean.
+#
+# How to interpret confidence intervals:
+#
+# A 95% two-tailed interval around a sample mean means that if we take 100
+# samples, calculate 100 sample means, and build 100 confidence
+# intervals around the corresponding sample means, 5 of those confidence
+# intervals will likely not contain the true population mean.
+#
+# One-tailed intervals follow the same logic.
+#
+# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+# 
 # Function to calculate two-tailed confidence intervals
 #
 # ----------------------------------------------------------------------
@@ -86,7 +105,7 @@ print( 'Population standard deviation = ' + str( round( sigma, 2 ) ) )
 print( '' )
 
 # draw a sample from the population with sample size of n
-n = 200
+n = 50
 sample = np.random.choice( population, size = n )
 dfSample = pd.DataFrame( sample, columns = ['Individual Sample'] )
 xbar = round( np.mean( sample ), 2 )
@@ -126,15 +145,10 @@ oneTailCi( sample, 0.95, sigma )
 oneTailCi( sample, 0.99, sigma )
 print( '' )
 
-print( 'Two-tailed confidence intervals using the sample standard ' +
+print( 'One-tailed confidence intervals using the sample standard ' +
        'deviation to estimate sample mean standard error:' )
 oneTailCi( sample, 0.8 )
 oneTailCi( sample, 0.9 )
 oneTailCi( sample, 0.95 )
 oneTailCi( sample, 0.99 )
 print( '' )
-# ----------------------------------------------------------------------
-# 
-# Two-tailed, 95% confidence interval
-#
-# ----------------------------------------------------------------------
