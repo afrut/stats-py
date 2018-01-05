@@ -35,7 +35,7 @@ dfPopulation = pd.DataFrame( population, columns = ['Population Distribution'] )
 # 
 # ----------------------------------------------------------------------
 # get a sample from from the population with sample size of n
-n = 200
+n = 50
 sample = np.random.choice( population, size = n )
 dfSample = pd.DataFrame( sample, columns = ['Individual Sample'] )
 xbar = round( np.mean( sample ), 2 )    # sample mean
@@ -95,7 +95,7 @@ print( '' )
 # ----------------------------------------------------------------------
 numBins = 40
 
-dfPopulation.hist( bins = numBins )       # histogram of population
+dfPopulation.hist( bins = numBins )     # histogram of population
 dfSample.hist( bins = numBins )         # histogram of sample
 dfSamplingDist.hist( bins = numBins )   # histogram of sampling distribution
 
