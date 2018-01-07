@@ -45,7 +45,6 @@ print( '' )
 # draw a sample from the population with sample size of n
 n = 50
 sample = np.random.choice( population, size = n )
-dfSample = pd.DataFrame( sample, columns = ['Individual Sample'] )
 xbar = round( np.mean( sample ), 2 )
 sx = round( np.std( sample ), 2 )
 sexbar = round( sigma / (n**(1/2) ), 2 )
