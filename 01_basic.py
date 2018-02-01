@@ -15,8 +15,8 @@ sp.call( 'cls', shell=True )    # clear screen
 mu = 160
 sigma = 10
 population = np.random.randn(10000) * sigma + mu;
-mu = np.mean( population )      # population mean
-sigma = np.std( population )    # population standard deviation
+mu = np.mean( population )                # population mean
+sigma = np.std( population, ddof = 0 )    # population standard deviation
 print( 'Population mean = ' + str( round( mu, 2 ) ) )
 print( 'Population standard deviation = ' + str( round( sigma, 2 ) ) )
 print( 'Population range = [' +
@@ -38,8 +38,8 @@ dfPopulation = pd.DataFrame( population, columns = ['Population Distribution'] )
 n = 50
 sample = np.random.choice( population, size = n )
 dfSample = pd.DataFrame( sample, columns = ['Individual Sample'] )
-xbar = round( np.mean( sample ), 2 )    # sample mean
-sx = round( np.std( sample ), 2 )       # sample standard deviation
+xbar = round( np.mean( sample ), 2 )        # sample mean
+sx = round( np.std( sample, ddof = 0 ), 2 ) # sample standard deviation
 print( 'Sample mean = ' + str( round( xbar, 2 ) ) )
 print( 'Sample standard deviation = ' + str( round( sx, 2 ) ) )
 print( '' )
@@ -55,7 +55,7 @@ print( '' )
 # natural question is, how do sample means vary with regards to the
 # population mean? It turns out that sample means can be thought of as
 # belonging to a sampling distribution whose mean is the population mean and
-# whose standard deviation = sigma / (n**(1/2)). The standard deviation
+# whose standard deviation = sigma / (sqrt(n)). The standard deviation
 # of the sampling distribution is called the standard error of the
 # sample mean. It gives us an idea of how sample means vary around
 # the true population mean. Thus, the sample mean can be thought of
@@ -76,9 +76,10 @@ for cnt in range( 0, 100000 ):
     sample = np.random.choice( population, size = n )
     lsXBar.append( np.mean( sample ) )
 dfSamplingDist = pd.DataFrame( lsXBar, columns = ['Sampling Distribution'] )
-xbars = np.asarray( lsXBar )
+xbars = np.array( lsXBar )
 sexbar = round( np.std( xbars ), 2 )
-sexbarCalc = round( sigma / ( n ** (1/2) ), 2 )
+sexbarCalc = round( sigma / ( np.sqrt( n ) ), 2 )
+sexbarEst = round( stats.sem( sample, ddof = 0 ), 4 )
 # calculate statistics on the sampling distribution
 print( 'Sampling distribution mean = ' + str( round( np.mean( xbars ), 2 ) ) )
 print( 'Sampling distribution standard deviation = ' + str( sexbar ) )
@@ -86,6 +87,8 @@ print( 'Sampling distribution standard deviation as ' +
        'standard error of sample mean = ' + str( sexbar ) )
 print( 'Sampling distribution standard deviation calculated from ' +
        'population standard deviation = ' + str( sexbarCalc ) )
+print( 'Estimate of standard error of sample mean = ' +
+       str( sexbarEst ) )
 print( '' )
 
 # ----------------------------------------------------------------------
