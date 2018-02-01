@@ -43,9 +43,9 @@ def twoTailCi( sample, clevel, sigma = None ):
 
     # calculate an estimate of the standard error of the sample mean
     if sigma is None:
-        sexbar = round( sx / ( n**(1/2) ), 4 )
+        sexbar = round( sx / ( np.sqrt(n) ), 4 )
     else:
-        sexbar = round( sigma / ( n**(1/2) ), 4 )
+        sexbar = round( sigma / ( np.sqrt(n) ), 4 )
 
     # calculate confidence interval bounds
     cihi = round( xbar + ( z * sexbar ), 4 )
@@ -73,9 +73,9 @@ def oneTailCi( sample, clevel, sigma = None ):
 
     # calculate an estimate of the standard error of the sample mean
     if sigma is None:
-        sexbar = round( sx / (n**(1/2)), 4 )
+        sexbar = round( sx / ( np.sqrt(n) ), 4 )
     else:
-        sexbar = round( sigma / (n**(1/2)), 4 )
+        sexbar = round( sigma / ( np.sqrt(n) ), 4 )
 
     # calculate confidence interval bounds
     cihi = round( xbar + ( z * sexbar ), 4 )
@@ -109,7 +109,7 @@ n = 50
 sample = np.random.choice( population, size = n )
 xbar = round( np.mean( sample ), 2 )
 sx = round( np.std( sample ), 2 )
-sexbar = round( sigma / (n**(1/2) ), 2 )
+sexbar = round( sigma / np.sqrt(n), 2 )
 print( 'Sample mean = ' + str( round( xbar, 2 ) ) )
 print( 'Sample standard deviation = ' + str( round( sx, 2 ) ) )
 print( 'Standard error of sample mean = ' + str( sexbar ) )
