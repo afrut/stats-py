@@ -45,7 +45,7 @@ def twoTailCi( sample, clevel ):
     t = round( stats.t.ppf( clevel, df ), 4 )
 
     # calculate standard error of sample mean
-    sexbar = round( sx / ( n**(1/2) ), 4 )
+    sexbar = round( sx / ( np.sqrt(n) ), 4 )
 
     # calculate confidence interval bounds
     cihi = round( xbar + ( t * sexbar ), 4 )
@@ -74,7 +74,7 @@ def oneTailCi( sample, clevel ):
     t = round( stats.norm.ppf( clevel ), 4 )
 
     # calculate an estimate of the standard error of the sample mean
-    sexbar = round( sx / (n**(1/2)), 4 )
+    sexbar = round( sx / ( np.sqrt(n) ) ), 4 )
 
     # calculate confidence interval bounds
     cihi = round( xbar + ( t * sexbar ), 4 )
@@ -101,7 +101,7 @@ def oneTailPvalue( sample, mu0 ):
     df = n - 1
 
     # calculate the standard error of the ma
-    sexbar = round( sx / ( n ** (1/2) ), 4 )
+    sexbar = round( sx / ( np.sqrt(n) ), 4 )
 
     # calculae t-score
     t = round( abs( ( xbar - mu0 ) ) / sexbar, 4 )
@@ -125,7 +125,7 @@ def twoTailPvalue( sample, mu0 ):
     df = n - 1
 
     # calculate the standard error of the ma
-    sexbar = round( sx / ( n ** (1/2) ), 4 )
+    sexbar = round( sx / ( np.sqrt(n) ), 4 )
 
     # calculae t-score
     t = round( abs( ( xbar - mu0 ) ) / sexbar, 4 )
