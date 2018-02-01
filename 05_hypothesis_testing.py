@@ -12,7 +12,7 @@ sp.call( 'cls', shell=True )    # clear screen
 #
 # ----------------------------------------------------------------------
 # create a population of 10,000 numbers
-mu = [ 160,175 ]
+mu = [ 170,175 ]
 sigma = [ 10,15 ]
 population = [ np.random.randn(10000) * sigma[0] + mu[0]
              , np.random.randn(10000) * sigma[1] + mu[1] ]
