@@ -11,7 +11,7 @@ sp.call( 'cls', shell=True )    # clear screen
 # Main script
 #
 # ----------------------------------------------------------------------
-# create a population of 100,000 numbers
+# create a population of 10,000 numbers
 mu = [ 160,175 ]
 sigma = [ 10,15 ]
 population = [ np.random.randn(10000) * sigma[0] + mu[0]
@@ -35,9 +35,11 @@ xbar = [ round( np.mean( sample[0] ), 2 )
        , round( np.mean( sample[1] ), 2 ) ]
 sx = [ round( np.std( sample[0] ), 2 )
      , round( np.std( sample[1] ), 2 ) ]
-sexbar = [ round( sigma[0] / ( n[0]**(1/2) ), 2 )
-         , round( sigma[1] / ( n[1]**(1/2) ), 2 ) ]
-print( str( stats.sem( sample[0] ) ) )
+sexbar = [ round( sigma[0] / ( np.sqrt(n[0]) ), 2 )
+         , round( sigma[1] / ( np.sqrt(n[1]) ), 2 ) ]
+sexbar = [ round( stats.sem( sample[0], ddof = 0 ), 4 )
+         , round( stats.sem( sample[1], ddof = 0 ), 4 ) ] # use scipy function to
+                                                # calculate sexbar
 print( 'Sample 0 mean = ' + str( round( xbar[0], 2 ) ) )
 print( 'Sample 0 standard deviation = ' + str( round( sx[0], 2 ) ) )
 print( 'Standard error of sample 1 mean = ' + str( sexbar[0] ) )
@@ -51,6 +53,23 @@ print( '' )
 # Hypothesis test for inequality
 #
 # ----------------------------------------------------------------------
-print( 'Assertion: Population 0 mean is not equal to population 1 mean' )
+print( 'Assertion: Population 1 mean is not equal to ' + str( mu[0] ) )
 print( 'H0: mu[0] = ' + str( mu[1] ) )
-print( 'HA: mu[0] != ' + str( mu[1] ) ) 
+print( 'HA: mu[0] != ' + str( mu[1] ) )
+print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'mu[0] = ' + str( mu[0] ) +
+       ', but this difference could be due to sampling variation' )
+
+# calculate a 95% confidence interval
+df = n[1] - 1
+t = round( stats.t.ppf( 0.975, df ), 4 )
+cilo = round( xbar[1] - ( t * sexbar[1] ), 4 )
+cihi = round( xbar[1] + ( t * sexbar[1] ), 4 )
+print( 'two-tailed 95% confidence interval = ' + str( xbar[1] ) + ' +/- ' +
+       str( t ) + ' * ' + str( sexbar[1] ) )
+print( 'two-tailed 95% confidence interval = (' + str( cilo ) +
+       ', ' + str( cihi ) + ')' )
+
+# calculate a p-value
+t = ( xbar[1] - mu[0] ) / sexbar[1]
+pvalue = round( ( 1 - stats.t.cdf( t, df ) ) * 2, 4 )
+print( 'pvalue = ' + str( pvalue ) )
