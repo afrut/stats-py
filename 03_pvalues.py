@@ -47,7 +47,7 @@ n = 50
 sample = np.random.choice( population, size = n )
 xbar = round( np.mean( sample ), 2 )
 sx = round( np.std( sample ), 2 )
-sexbar = round( sigma / (n**(1/2) ), 2 )
+sexbar = round( sigma / ( np.sqrt(n) ), 2 )
 print( 'Sample mean = ' + str( round( xbar, 2 ) ) )
 print( 'Sample standard deviation = ' + str( round( sx, 2 ) ) )
 print( 'Standard error of sample mean = ' + str( sexbar ) )
@@ -59,10 +59,10 @@ print( '' )
 #
 # ----------------------------------------------------------------------
 # calculate the z-score using the usually unknown population standard deviation
-z = (xbar - mu) / sigma
+z = (xbar - mu) / ( sigma / np.sqrt(n) )
 
 # alternatively, calculate the z-score using the sample standard deviation
-z = (xbar - mu) / sx
+z = (xbar - mu) / ( sx / np.sqrt(n) )
 
 # find the one-tailed p-value
 pvalue1 = 1 - stats.norm.cdf( z )
