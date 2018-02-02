@@ -54,8 +54,8 @@ print( '' )
 #
 # ----------------------------------------------------------------------
 print( 'Assertion: Population 1 mean is not equal to ' + str( mu[0] ) )
-print( 'H0: mu[0] = ' + str( mu[1] ) )
-print( 'HA: mu[0] != ' + str( mu[1] ) )
+print( 'H0: mu[0] = ' + str( mu[0] ) )
+print( 'HA: mu[0] != ' + str( mu[0] ) )
 print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'mu[0] = ' + str( mu[0] ) +
        ', but this difference could be due to sampling variation' )
 
