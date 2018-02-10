@@ -53,15 +53,17 @@ print( '' )
 # Hypothesis test for inequality
 #
 # ----------------------------------------------------------------------
-print( 'Assertion: Population 1 mean is not equal to ' + str( mu[0] ) )
-print( 'H0: mu[0] = ' + str( mu[0] ) )
-print( 'HA: mu[0] != ' + str( mu[0] ) )
-print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'mu[0] = ' + str( mu[0] ) +
+H0 = mu[0]
+print( 'Assertion: Population 1 mean is not equal to ' + str( H0 ) )
+print( 'H0: mu[0] = ' + str( H0 ) )
+print( 'HA: mu[0] != ' + str( H0 ) )
+print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'H0 = ' + str( H0 ) +
        ', but this difference could be due to sampling variation' )
 
 # calculate a 95% confidence interval
+alpha = 0.05
 df = n[1] - 1
-t = round( stats.t.ppf( 0.975, df ), 4 )
+t = round( stats.t.ppf( (1 - alpha/2 ), df ), 4 )
 cilo = round( xbar[1] - ( t * sexbar[1] ), 4 )
 cihi = round( xbar[1] + ( t * sexbar[1] ), 4 )
 print( 'two-tailed 95% confidence interval = ' + str( xbar[1] ) + ' +/- ' +
@@ -70,6 +72,13 @@ print( 'two-tailed 95% confidence interval = (' + str( cilo ) +
        ', ' + str( cihi ) + ')' )
 
 # calculate a p-value
-t = ( xbar[1] - mu[0] ) / sexbar[1]
+t = ( xbar[1] - H0 ) / sexbar[1]
 pvalue = round( ( 1 - stats.t.cdf( t, df ) ) * 2, 4 )
 print( 'pvalue = ' + str( pvalue ) )
+
+# state results of hypothesis tests
+if( (H0 >= cilo and H0 <= cihi) or
+    ( pvalue >= alpha ) ):
+    print( "Fail to reject null hypothesis H0")
+else:
+    print( "Reject null hypothesis H0" )
