@@ -12,8 +12,8 @@ sp.call( 'cls', shell=True )    # clear screen
 #
 # ----------------------------------------------------------------------
 # create a population of 10,000 numbers
-mu = [ 170,175 ]
-sigma = [ 10,15 ]
+mu = [ np.random.randint( 170,175 ), np.random.randint( 170, 175 ) ]
+sigma = [ np.random.randint( 5, 10 ), np.random.randint( 10, 15 ) ]
 population = [ np.random.randn(10000) * sigma[0] + mu[0]
              , np.random.randn(10000) * sigma[1] + mu[1] ]
 mu = [ round( np.mean(population[0]) )
@@ -27,7 +27,7 @@ print( 'Population 1 standard deviation = ' + str( round( sigma[1], 2 ) ) )
 print( '' )
 
 # draw a sample from the population with sample size of n
-n = [ 23,67 ]
+n = [ np.random.randint( 20, 29 ), np.random.randint( 50, 70 ) ]
 sample = list()
 sample.append( np.random.choice( population[0], size = n[0] ) )
 sample.append( np.random.choice( population[1], size = n[1] ) )
@@ -42,10 +42,13 @@ sexbar = [ round( stats.sem( sample[0], ddof = 0 ), 4 )
                                                 # calculate sexbar
 print( 'Sample 0 mean = ' + str( round( xbar[0], 2 ) ) )
 print( 'Sample 0 standard deviation = ' + str( round( sx[0], 2 ) ) )
-print( 'Standard error of sample 1 mean = ' + str( sexbar[0] ) )
+print( 'Sample 0 has size ' + str( n[0] ) )
+print( 'Standard error of sample 0 mean = ' + str( sexbar[0] ) )
+print( '' )
 print( 'Sample 1 mean = ' + str( round( xbar[1], 2 ) ) )
 print( 'Sample 1 standard deviation = ' + str( round( sx[1], 2 ) ) )
-print( 'Standard error of sample 2 mean = ' + str( sexbar[1] ) )
+print( 'Sample 1 has size ' + str( n[1] ) )
+print( 'Standard error of sample 1 mean = ' + str( sexbar[1] ) )
 print( '' )
 
 # ----------------------------------------------------------------------
@@ -53,12 +56,11 @@ print( '' )
 # Hypothesis test for inequality
 #
 # ----------------------------------------------------------------------
-H0 = mu[0]
-print( 'Assertion: Population 1 mean is not equal to ' + str( H0 ) )
-print( 'H0: mu[0] = ' + str( H0 ) )
-print( 'HA: mu[0] != ' + str( H0 ) )
-print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'H0 = ' + str( H0 ) +
-       ', but this difference could be due to sampling variation' )
+nullvalue = mu[0]
+print( 'Assertion: Population 1 mean is not equal to ' + str( nullvalue ) )
+print( 'H0: mu[1] = ' + str( nullvalue ) )
+print( 'HA: mu[1] != ' + str( nullvalue ) )
+print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'H0 = ' + str( nullvalue ) )
 
 # calculate a 95% confidence interval
 alpha = 0.05
@@ -72,13 +74,14 @@ print( 'two-tailed 95% confidence interval = (' + str( cilo ) +
        ', ' + str( cihi ) + ')' )
 
 # calculate a p-value
-t = ( xbar[1] - H0 ) / sexbar[1]
+t = abs( ( xbar[1] - nullvalue ) / sexbar[1] )
 pvalue = round( ( 1 - stats.t.cdf( t, df ) ) * 2, 4 )
 print( 'pvalue = ' + str( pvalue ) )
 
 # state results of hypothesis tests
-if( (H0 >= cilo and H0 <= cihi) or
+if( (nullvalue >= cilo and nullvalue <= cihi) or
     ( pvalue >= alpha ) ):
     print( "Fail to reject null hypothesis H0")
 else:
     print( "Reject null hypothesis H0" )
+print( '' )
