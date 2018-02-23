@@ -79,9 +79,42 @@ pvalue = round( ( 1 - stats.t.cdf( t, df ) ) * 2, 4 )
 print( 'pvalue = ' + str( pvalue ) )
 
 # state results of hypothesis tests
-if( (nullvalue >= cilo and nullvalue <= cihi) or
+if( ( nullvalue >= cilo and nullvalue <= cihi ) or
     ( pvalue >= alpha ) ):
     print( "Fail to reject null hypothesis H0")
+else:
+    print( "Reject null hypothesis H0" )
+print( '' )
+
+# ----------------------------------------------------------------------
+# 
+# One-sided hypothesis tests
+#
+# ----------------------------------------------------------------------
+nullvalue = mu[0]
+print( 'Assertion: Population 1 mean is greater than ' + str( nullvalue ) )
+print( 'H0: mu[1] = ' + str( nullvalue ) )
+print( 'HA: mu[1] > ' + str( nullvalue ) )
+print( 'xbar[1] = ' + str( xbar[1] ) + ' vs ' + 'H0 = ' + str( nullvalue ) )
+
+# calculate a 95% confidence interval
+alpha = 0.05
+df = n[1] - 1
+t = abs( round( stats.t.ppf( alpha, df ), 4 ) )
+cilo = round( xbar[1] - ( t * sexbar[1] ), 4 )
+cihi = float( 'inf' )
+print( 'one-tailed 95% confidence interval = (' + str( cilo ) + ', ' +
+       str( cihi ) + ')' )
+
+# calculate a p-value
+t = abs( ( xbar[1] - nullvalue ) / sexbar[1] )
+pvalue = round( 1 - stats.t.cdf( t, df ), 4 )
+print( 'pvalue = ' + str( pvalue ) )
+
+# state the results of the hypothesis tests
+if( ( nullvalue >= cilo and nullvalue <= cihi ) or
+    ( pvalue > alpha or xbar[1] < nullvalue ) ):
+    print( "Fail to reject null hypothesis H0" )
 else:
     print( "Reject null hypothesis H0" )
 print( '' )
