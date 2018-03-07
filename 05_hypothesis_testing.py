@@ -164,8 +164,20 @@ print( 'HA: mu[0] - mu[1] != ' + str( nullvalue ) )
 print( 'xbar[0] = ' + str( xbar[0] ) )
 print( 'xbar[1] = ' + str( xbar[1] ) )
 
+# Use pooled standard deviations, sp, in place of sx[0] and sx[1] in the
+# above analyses when background research indicates that the population
+# standard eviations are nearly equal.
+sp = np.sqrt( ( (sx[0]**2 * (n[0] - 1)) + (sx[1]**2 * (n[1] - 1)) ) /
+     ( n[0] + n[1] - 2 ) )
+
 # calculate the standard error of the difference between two means
-sexbarDiff = np.sqrt( ((sx[0]**2)/n[0] ) + (( sx[1]**2/n[1] ) ) )
+if( abs( 1 - (sigma[0]/sigma[1]) ) <= 0.01 ):
+    # use pooled standard deviations
+    sexbarDiff = np.sqrt( ((sp**2)/n[0] ) + (( sp**2/n[1] ) ) )
+    print( 'Population standard deviations are close enough. Use' +
+           ' pooled standard deviation, sp = ' + str( round( sp, 4 ) ) )
+else:
+    sexbarDiff = np.sqrt( ((sx[0]**2)/n[0] ) + (( sx[1]**2/n[1] ) ) )
 
 # calculate a 95% confidence interval
 df = min( [ num - 1 for num in n ] )
