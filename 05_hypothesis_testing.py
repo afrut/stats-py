@@ -39,7 +39,7 @@ sexbar = [ round( sigma[0] / ( np.sqrt(n[0]) ), 2 )
          , round( sigma[1] / ( np.sqrt(n[1]) ), 2 ) ]
 sexbar = [ round( stats.sem( sample[0], ddof = 0 ), 4 )
          , round( stats.sem( sample[1], ddof = 0 ), 4 ) ] # use scipy function to
-                                                # calculate sexbar
+                                                          # calculate sexbar
 print( 'Sample 0 mean = ' + str( round( xbar[0], 2 ) ) )
 print( 'Sample 0 standard deviation = ' + str( round( sx[0], 2 ) ) )
 print( 'Sample 0 has size ' + str( n[0] ) )
@@ -81,7 +81,7 @@ print( 'pvalue = ' + str( pvalue ) )
 # state results of hypothesis tests
 if( ( nullvalue >= cilo and nullvalue <= cihi ) or
     ( pvalue >= alpha ) ):
-    print( "Fail to reject null hypothesis H0")
+    print( "Fail to reject null hypothesis H0" )
 else:
     print( "Reject null hypothesis H0" )
 print( '' )
@@ -147,6 +147,42 @@ print( 'pvalue = ' + str( pvalue ) )
 # state the results of the hypothesis tests
 if( ( nullvalue >= cilo and nullvalue <= cihi ) or
     ( pvalue > alpha or xbar[1] > nullvalue ) ):
+    print( "Fail to reject null hypothesis H0" )
+else:
+    print( "Reject null hypothesis H0" )
+print( '' )
+
+# ----------------------------------------------------------------------
+# 
+# Difference of two means
+#
+# ----------------------------------------------------------------------
+nullvalue = 0
+print( 'Assertion: Population 0 mean - Population 1 mean = 0' )
+print( 'H0: mu[0] - mu[1] = ' + str( nullvalue ) )
+print( 'HA: mu[0] - mu[1] != ' + str( nullvalue ) )
+print( 'xbar[0] = ' + str( xbar[0] ) )
+print( 'xbar[1] = ' + str( xbar[1] ) )
+
+# calculate the standard error of the difference between two means
+sexbarDiff = np.sqrt( ((sx[0]**2)/n[0] ) + (( sx[1]**2/n[1] ) ) )
+
+# calculate a 95% confidence interval
+df = min( [ num - 1 for num in n ] )
+t = abs ( round( stats.t.ppf( 1 - ( alpha/2 ), df ) ) )
+cilo = round( xbar[0] - xbar[1] - ( t * sexbarDiff ), 4 )
+cihi = round( xbar[0] - xbar[1] + ( t * sexbarDiff ), 4 )
+print( 'two-tailed 95% confidence interval = (' + str( cilo ) + ', ' +
+       str( cihi ) + ')' )
+
+# calculate a p-value
+t = abs( ( xbar[0] - xbar[1] - nullvalue ) / sexbarDiff )
+pvalue = round( ( 1 - stats.t.cdf( t, df ) ) * 2 ,4 )
+print( 'pvalue = ' + str( pvalue ) )
+
+# state results of the hypothesis tests
+if( ( nullvalue >= cilo and nullvalue <= cihi ) or
+    ( pvalue >= alpha ) ):
     print( "Fail to reject null hypothesis H0" )
 else:
     print( "Reject null hypothesis H0" )
