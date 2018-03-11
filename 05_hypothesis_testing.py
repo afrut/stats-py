@@ -199,3 +199,5 @@ if( ( nullvalue >= cilo and nullvalue <= cihi ) or
 else:
     print( "Reject null hypothesis H0" )
 print( '' )
+
+# TODO: explore power calculations for a difference of means
