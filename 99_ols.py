@@ -2,6 +2,7 @@ import subprocess as sp
 import sklearn.datasets as ds
 import pandas as pd
 import sklearn.linear_model as lm
+import numpy as np
 
 sp.call( 'cls', shell = True )
 
@@ -29,12 +30,16 @@ Y.columns = ['price']
 #**********************************************************************
 lr = lm.LinearRegression()          # create LinearRegression object
 lr.fit( X, Y )                      # fit a linear model
-print( 'Estimated intercept coefficient: ' + str( lr.intercept_ ) + '\n' )
-print( 'Number of coefficients: ' + str( len( lr.coef_ ) ) + '\n' )
 
 # create a DataFrame of coefficients and feature names
 coef = pd.DataFrame( list( zip(X.columns, lr.coef_) ), columns = [ 'features', 'coefficients'] )
+
+# append intercept to DataFrame
 coef = coef.append( pd.DataFrame( list( zip( ['intercept']
                                            , [lr.intercept_] ) )
                                 , columns = coef.columns ) )
+print( 'Estimated intercept coefficient: ' + str( lr.intercept_ ) + '\n' )
+print( 'Number of coefficients: ' + str( len( lr.coef_ ) ) + '\n' )
 print( 'Coefficients:\n' + str( coef ) + '\n' )
+
+# TODO: attempt to duplicate lr.predict using array multiplication
