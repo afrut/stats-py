@@ -2,7 +2,6 @@ import subprocess as sp
 import scipy.stats as stats
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 sp.call( 'cls', shell=True )    # clear screen
 
