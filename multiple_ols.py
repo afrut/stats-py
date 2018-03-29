@@ -37,8 +37,6 @@ print( 'Head: \n' + str( df.head() ) )                          # first few rows
 # MODEL FITTING
 #
 #**********************************************************************
-# TODO: add drop as part of python snippets for linear regression
-
 # create the features DataFrame
 X = df.drop( 'PRICE', axis = 1 )
 

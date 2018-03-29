@@ -15,7 +15,6 @@ x = np.linspace( 0, 10, n )      # create independent variable from 0 to 10
 X = np.column_stack( (x, x**2) ) # create two columns from the tuple of arrays
 beta = np.array( [1, 0.1, 10] )  # specify the true value of the parameters
 e = np.random.normal( size = n ) # simulate random error from a normal distribution
-# TODO: add column_stack to numpy_snippets
 
 # add constant to the independent variable matrix for regression intercept
 X = sm.add_constant ( X )
