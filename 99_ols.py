@@ -110,31 +110,35 @@ Y = pd.DataFrame( diabetes.target, columns = ['prog'] )
 Y_pred = pd.DataFrame( Y_pred, columns = ['prog'] )
 
 # scatter plot of Disease Progression against BMI
+fig = plt.figure()
+ax = fig.add_subplot(111)
 plt.scatter( X.bmi, Y.prog )
-plt.xlabel( 'BMI of patient (bmi)' )
-plt.ylabel( 'Disease progression (prog)' )
-plt.title ( 'Relationship of BMI and Disease Progression' )
-plt.show()
+ax.set_xlabel( 'BMI of patient (bmi)' )
+ax.set_ylabel( 'Disease progression (prog)' )
+ax.set_title ( 'Relationship of BMI and Disease Progression' )
 
 # scatter plot of predicted disease progress
 # vs real disease progression
+fig = plt.figure()
+ax = fig.add_subplot(111)
 plt.scatter( Y.prog, Y_pred.prog )
-plt.xlabel( 'Disease Progression: $Y_i$' )
-plt.ylabel( 'Predicted Disease Progression: $\hat{Y}_i$' )
-plt.title( 'Disease Progression vs Predicted' +
+ax.set_xlabel( 'Disease Progression: $Y_i$' )
+ax.set_ylabel( 'Predicted Disease Progression: $\hat{Y}_i$' )
+ax.set_title( 'Disease Progression vs Predicted' +
            'Disease Progression: $Y_i$ vs $\hat{Y}_i$' )
-plt.show()
 
 # create a residual plot
+fig = plt.figure()
+ax = fig.add_subplot(111)
 plt.scatter( Y_pred.prog
            , Y_pred.prog - Y.prog
            , c = 'b'
            , s = 40
            , alpha = 0.5 )
 plt.hlines( y = 0, xmin = 0, xmax = 300 )
-plt.title( 'Residual Plot' )
-plt.xlabel( 'Predicted Disease Progression' )
-plt.ylabel( 'Residuals' )
-plt.show()
+ax.set_title( 'Residual Plot' )
+ax.set_xlabel( 'Predicted Disease Progression' )
+ax.set_ylabel( 'Residuals' )
 
-# TODO: examine matplotlib plotting all plots in different figures all at once
+# show all plots
+plt.show()
