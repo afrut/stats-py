@@ -98,27 +98,44 @@ print( '' )
 # ----------------------------------------------------------------------
 numBins = 40
 
-dfPopulation.hist( bins = numBins )     # histogram of population
-dfSample.hist( bins = numBins )         # histogram of sample
-dfSamplingDist.hist( bins = numBins )   # histogram of sampling distribution
+# create single figure with subplots for all plots
+fig = plt.figure()
+
+# histogram of population
+ax = fig.add_subplot(2,3,1)
+dfPopulation.hist( bins = numBins, ax = ax )
+ax.set_xlabel( 'Member Value Bins' )
+ax.set_ylabel( 'Frequency' )
+
+# histogram of sample
+ax = fig.add_subplot(2,3,2)
+dfSample.hist( bins = numBins, ax = ax )
+ax.set_xlabel( 'Sample Values Bins' )
+ax.set_ylabel( 'Frequency' )
+
+# histogram of sampling distribution
+ax = fig.add_subplot(2,3,3)
+dfSamplingDist.hist( bins = numBins, ax = ax )
+ax.set_xlabel( 'Member Value Bins' )
+ax.set_ylabel( 'Frequency' )
 
 # normal probability plot of population distribution
-fig = plt.figure()
-ax = fig.add_subplot(111)
-stats.probplot( population, plot = plt )
+ax = fig.add_subplot(2,3,4)
+stats.probplot( population, plot = ax )
 ax.set_title( 'Normal Probability Plot of the Population' )
 
 # normal probability plot of the sample
-fig = plt.figure()
-ax = fig.add_subplot(111)
-stats.probplot( sample, plot = plt )
+ax = fig.add_subplot(2,3,5)
+stats.probplot( sample, plot = ax )
 ax.set_title( 'Normal Probability Plot of the Sample' )
 
 # normal probability plot of sample means
-fig = plt.figure()
-ax = fig.add_subplot(111)
-stats.probplot( xbars, plot = plt )
+ax = fig.add_subplot(2,3,6)
+stats.probplot( xbars, plot = ax )
 ax.set_title( 'Normal Probability Plot of Sample Means' )
+
+# overall title
+fig.suptitle( 'Histograms and Normal Probability Plots' )
 
 # show all plots
 plt.show()
