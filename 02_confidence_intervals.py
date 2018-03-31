@@ -2,6 +2,7 @@ import subprocess as sp
 import scipy.stats as stats
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 sp.call( 'cls', shell=True )    # clear screen
 
@@ -103,6 +104,20 @@ print( 'Population mean = ' + str( round( mu, 2 ) ) )
 print( 'Population standard deviation = ' + str( round( sigma, 2 ) ) )
 print( '' )
 
+# histogram and Gaussian fit of population data
+fig = plt.figure()
+ax = fig.add_subplot(2,3,1)
+numBins = 100
+freq, bins, patches = ax.hist( population, numBins )
+binWidth = bins[1] - bins[0]
+ax.set_xlabel( 'Bins' )
+ax.set_ylabel( 'Frequency' )
+ax.set_title( 'Histogram of Population with Gaussian Fit' )
+x = np.linspace( bins[0], bins[-1], 100 )
+y = stats.norm.pdf( x, mu, sigma ) * np.sum( freq * binWidth )
+ax.plot( x, y )
+ax.legend(['Gaussian Fit','Frequency'], loc='best')
+
 # draw a sample from the population with sample size of n
 n = 50
 sample = np.random.choice( population, size = n )
@@ -113,6 +128,19 @@ print( 'Sample mean = ' + str( round( xbar, 2 ) ) )
 print( 'Sample standard deviation = ' + str( round( sx, 2 ) ) )
 print( 'Standard error of sample mean = ' + str( sexbar ) )
 print( '' )
+
+# histogram and Gaussian fit of sample data
+ax = fig.add_subplot(2,3,2)
+numBins = 7
+freq, bins, patches = ax.hist( sample, numBins )
+binWidth = bins[1] - bins[0]
+ax.set_xlabel( 'Bins' )
+ax.set_ylabel( 'Frequency' )
+ax.set_title( 'Histogram of Sample with Gaussian Fit' )
+x = np.linspace( bins[0], bins[-1], 100 )
+y = stats.norm.pdf( x, mu, sigma ) * np.sum( freq * binWidth )
+ax.plot( x, y )
+ax.legend(['Gaussian Fit','Frequency'], loc='best')
 
 # ----------------------------------------------------------------------
 # 
@@ -155,3 +183,6 @@ oneTailCi( sample, 0.9 )
 oneTailCi( sample, 0.95 )
 oneTailCi( sample, 0.99 )
 print( '' )
+
+# show all plots
+plt.show()
