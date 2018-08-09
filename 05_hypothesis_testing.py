@@ -6,6 +6,16 @@ import numpy as np
 sp.call( 'cls', shell=True )    # clear screen
 
 # ----------------------------------------------------------------------
+#
+# Problems often involve making statements (hypotheses) about the
+# population based on sample data. Assertions may be made that the
+# population mean is greater than, less than, or equal to a certain
+# value, c. These assertions depend on sample means since the population
+# mean is usually unknown.
+# 
+# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
 # 
 # Main script
 #
