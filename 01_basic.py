@@ -1,20 +1,21 @@
+# import necessary libraries
 import subprocess as sp
 import scipy.stats as stats
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
+from matplotlib import pyplot as plt
 
-sp.call( 'cls', shell=True )    # clear screen
+sp.call( 'cls', shell=True )        # clear screen
 
 # ----------------------------------------------------------------------
 # 
 # Population ditribution
 # 
 # ----------------------------------------------------------------------
-# create a population of 100,000
-mu = 160
-sigma = 10
-population = np.random.randn(10000) * sigma + mu;
+# create a population of 1 million heights in cm
+mu = 175
+sigma = 15
+population = np.random.randn( 1000000 ) * sigma + mu;
 mu = np.mean( population )                # population mean
 sigma = np.std( population, ddof = 0 )    # population standard deviation
 print( 'Population mean = ' + str( round( mu, 2 ) ) )
@@ -96,10 +97,16 @@ print( '' )
 # Plotting
 # 
 # ----------------------------------------------------------------------
-numBins = 40
+
+# close all other figures first
+plt.close( 'all' )
+
+numBins = 40            # number of bins in histograms
+figWidth = 15           # width of figure in inches
 
 # create single figure with subplots for all plots
 fig = plt.figure()
+fig.set_size_inches( figWidth, figWidth / 1.6 )
 
 # histogram of population
 ax = fig.add_subplot(2,3,1)
