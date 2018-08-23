@@ -10,9 +10,9 @@ sp.call( 'cls', shell=True )    # clear screen
 # 
 # If estimating the population mean is analogous to spear-fishing,
 # confidence intervals are analogous to net fishing. They give a range
-# of values that may contain the mean at a specific confidence level.
-# They give an idea of how the sample mean varies around the true
-# population mean.
+# of values that may contain the true population mean assuming a specific
+# confidence level. They give an idea of how the sample mean varies
+# around the true population mean.
 #
 # How to interpret confidence intervals:
 #
