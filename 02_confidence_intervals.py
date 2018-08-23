@@ -106,7 +106,7 @@ print( '' )
 
 # histogram and Gaussian fit of population data
 fig = plt.figure()
-ax = fig.add_subplot(2,3,1)
+ax = fig.add_subplot(1,2,1)
 numBins = 100
 freq, bins, patches = ax.hist( population, numBins )
 binWidth = bins[1] - bins[0]
@@ -130,7 +130,7 @@ print( 'Standard error of sample mean = ' + str( sexbar ) )
 print( '' )
 
 # histogram and Gaussian fit of sample data
-ax = fig.add_subplot(2,3,2)
+ax = fig.add_subplot(1,2,2)
 numBins = 7
 freq, bins, patches = ax.hist( sample, numBins )
 binWidth = bins[1] - bins[0]
