@@ -73,7 +73,7 @@ def oneTailCi( sample, clevel ):
     t = round( stats.norm.ppf( clevel ), 4 )
 
     # calculate an estimate of the standard error of the sample mean
-    sexbar = round( sx / ( np.sqrt(n) ) ), 4 )
+    sexbar = round( sx / ( np.sqrt(n) ), 4 )
 
     # calculate confidence interval bounds
     cihi = round( xbar + ( t * sexbar ), 4 )

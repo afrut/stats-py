@@ -7,15 +7,17 @@ sp.call( 'cls', shell=True )    # clear screen
 
 # ----------------------------------------------------------------------
 # 
-# How to interpret p-values:
+# P-values are used in the context of hypothesis testing. They give
+# information regarding the probability of encountering a specific
+# sample statistic assuming a null value.
 #
-# Given an assumend population mean mu0, one-tailed p-values state the
-# probability of encountering sample means greater than or equal to the
-# one encountered.
+# Given an assumend population mean mu0, or null value, one-tailed
+# p-values state probability of encountering sample means greater than
+# or equal to the one encountered.
 #
-# Given an assumed population mean mu0, two-tailed p-values state the
-# probability of encountering sample means with the same or greater
-# distance from the assumed population mean.
+# Given an assumed population mean mu0, or null value, two-tailed
+# p-values state the probability of encountering sample means with
+# the same or greater distance from the assumed population mean.
 #
 # Intuitively, given a distribution centered around mu with a standard
 # deviation sigma, an xbar with a one-tailed p-value of 0.01 means
