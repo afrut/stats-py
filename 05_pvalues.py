@@ -71,6 +71,6 @@ pvalue1 = 1 - stats.norm.cdf( z )
 # find the two-tailed p-value
 pvalue2 = ( 1 - stats.norm.cdf( z ) ) * 2
 
-print( 'The one-tailed p-value = ' + str( pvalue1 ) )
-print( 'The two-tailed p-value = ' + str( pvalue2 ) )
+print( 'The one-tailed p-value = ' + str( round( pvalue1, 6 ) ) )
+print( 'The two-tailed p-value = ' + str( round( pvalue2, 6 ) ) )
 print( '' )

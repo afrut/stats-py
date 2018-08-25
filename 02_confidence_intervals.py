@@ -105,7 +105,9 @@ print( 'Population standard deviation = ' + str( round( sigma, 2 ) ) )
 print( '' )
 
 # histogram and Gaussian fit of population data
+figWidth = 15
 fig = plt.figure()
+fig.set_size_inches( figWidth, figWidth / 1.6 )
 ax = fig.add_subplot(1,2,1)
 numBins = 100
 freq, bins, patches = ax.hist( population, numBins )

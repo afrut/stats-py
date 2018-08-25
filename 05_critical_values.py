@@ -1,3 +1,4 @@
+# TODO: finsih this script
 import subprocess as sp
 import scipy.stats as stats
 import pandas as pd
