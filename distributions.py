@@ -24,7 +24,6 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------
     edgecolor = np.array([0.121568627,0.466666667,0.705882353]) / 1.6   # color of the edges of the bar graph rectangles
     show = False                                                        # whether or not to show plots
-    close = True                                                        # whether or not to close plots
 
     # ----------------------------------------------------------------------
     #
@@ -45,6 +44,7 @@ if __name__ == '__main__':
     print('----------------------------------------')
     print('{0}An event E occurs with a probability of {1}.'.format(space, p))
     prob = stats.binom.pmf(k, n, p)
+    assert(0.284 - round(prob,3) == 0)
     print('{0}The probability that E occurs {1} times'.format(space, k) +\
         ' in the next {0} events is {1:.4}.'.format(n, prob))
     x = list()
@@ -58,9 +58,13 @@ if __name__ == '__main__':
 
     k = 4
     prob = 0
+    probcum = stats.binom.cdf(k - 1, n, p)
+    probcum = 1 - probcum
     for k in range(0, k):
         prob = prob + stats.binom.pmf(k, n, p)
     prob = 1 - prob
+    assert(round(abs(probcum - prob), 4) == 0)
+    assert(abs(0.098 - round(probcum, 3)) == 0)
     print('{0}The probability that E occurs >= {1} times in {2} events {3:.4} is'\
         .format(space, k + 1, n, prob))
 
@@ -71,6 +75,7 @@ if __name__ == '__main__':
         prob = prob + stats.binom.pmf(k, n, p)
     probcum = stats.binom.cdf(k2, n, p) - stats.binom.cdf(k1, n, p)\
         - stats.binom.pmf(k2, n, p) + stats.binom.pmf(k1, n, p)
+    assert(round(abs(prob - probcum), 4) == 0)
     print('{0}The probability that E occurs {1} <= k < {2} times in {3} events is {4:.4}'\
         .format(space, k1, k2, n, prob))
 
@@ -85,7 +90,7 @@ if __name__ == '__main__':
         ,title = 'Binomial Distribution; p = {0:.4}, n = {1}, k = {2}'.format(p, n, k)
         ,align = 'edge'
         ,edgecolor = edgecolor
-        ,show = show, close = close)
+        ,show = False, close = False)
     print('')
 
     # ----------------------------------------------------------------------
@@ -108,6 +113,7 @@ if __name__ == '__main__':
     prob = stats.geom.pmf(k, p)
     print('{0}The probability that E first occurs in {1} times is {2:.4}'\
         .format(space, k, prob))
+    assert(0.066 == round(prob, 3))
     x = list()
     probs = list()
     ks = k + 1
@@ -123,6 +129,7 @@ if __name__ == '__main__':
     for k in range(0, k):
         prob = prob + stats.geom.pmf(k, p)
     prob = 1 - prob
+    assert(0.729 == round(prob, 3))
     print('{0}The probability that E first occurs in >= {1} events is {2:.4}'.format(space, k + 1, prob))
 
     k1 = 3
@@ -132,6 +139,7 @@ if __name__ == '__main__':
         prob = prob + stats.geom.pmf(k, p)
     probcum = stats.geom.cdf(k2, p) - stats.geom.cdf(k1, p)\
         - stats.geom.pmf(k2, p) + stats.geom.pmf(k1, p)
+    assert(round(abs(probcum - prob), 4) == 0)
     print('{0}The probability that first E occurs in {1} <= k < {2} events is {3:.4}'.format(space, k1, k2, prob))
 
     mu = stats.geom.mean(p)
@@ -145,7 +153,7 @@ if __name__ == '__main__':
         ,title = 'Geometric Distribution; p = {0:.4}, n = {1}, k = {2}'.format(p, n, k)
         ,align = 'edge'
         ,edgecolor = edgecolor
-        ,show = show, close = close)
+        ,show = False, close = False)
     print('')
 
     # ----------------------------------------------------------------------
@@ -175,6 +183,7 @@ if __name__ == '__main__':
     prob = stats.nbinom.pmf(n - k, k, p)
     print('{0}The probability that E occurs exactly {1} times by the {2}th event is {3:.4}'\
         .format(space, k, n, prob))
+    assert(round(abs(prob - 0.004464),6) == 0)
     x = list()
     probs = list()
     for k in range(1, n + 1):
@@ -193,6 +202,9 @@ if __name__ == '__main__':
     ns = range(k, n + 1)
     for n in ns:
         prob = prob + stats.nbinom.pmf(n - k, k, p)
+    probcum = stats.nbinom.cdf(n - k, k, p)
+    assert(round(abs(prob - probcum), 6) == 0)
+    assert(0.058 == round(probcum,3))
     print('{0}The probability that E occurs exactly {1} times by the <= {2}th event is {3:.4}'\
         .format(space, k, n, prob))
 
@@ -203,6 +215,11 @@ if __name__ == '__main__':
             .format(pplot, nplot, kplot)
         ,align = 'edge'
         ,edgecolor = edgecolor
-        ,show = True, close = True)
+        ,show = False, close = False)
     print('')
 
+    # show plots
+    if(show):
+        plt.show()
+    else:
+        plt.close()
