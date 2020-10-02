@@ -94,9 +94,9 @@ if __name__ == '__main__':
 
     # ----------------------------------------------------------------------
     #
-    # Permutations of Similar Objects: The total number of different ways to 5
-    # objects of type 1, 3 objects of type 2, and 4 objects of type 3 is
-    # (5 + 3 + 4)!/(5! x 3! x 4!)
+    # Permutations of Similar Objects: The total number of different ways to
+    # arrange 5 objects of type 1, 3 objects of type 2, and 4 objects of type 3
+    # is (5 + 3 + 4)!/(5! x 3! x 4!)
     #
     # ----------------------------------------------------------------------
     ls = [3, 2, 4]
