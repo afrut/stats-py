@@ -1,2 +1,2 @@
 # utl-py
-This is a personal repository that contains Python functions that represent commonly encountered tasks.
+This is a personal repository that contains useful Python functions and templates. It is a reflection of the tasks I frequently encounter.
