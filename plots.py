@@ -51,6 +51,8 @@ def boxplot(df
 
     return fig
 
+
+
 # ----------------------------------------
 # plot a histogram of certain variables
 # ----------------------------------------
@@ -206,7 +208,6 @@ def histogram(df
 
         if close:
             plt.close()
-
                 
 
 
@@ -246,6 +247,8 @@ def scattermatrix(
 
     if close:
         plt.close()
+
+
 
 # ----------------------------------------
 # plot a heat map
@@ -308,6 +311,8 @@ def heatmap(df
 
     if close:
         plt.close()
+
+
 
 # ----------------------------------------
 # simple scatter plot between two quantities
@@ -412,6 +417,8 @@ def scatter(x, y
 
     return fig
 
+
+
 # ----------------------------------------
 # plot a bar chart with text labels
 # ----------------------------------------
@@ -423,15 +430,17 @@ def barplot(
     ,figsize: tuple = (14.4, 9)
     ,ax = None
     ,yLim = None
-    ,barwidth: float = 0.35
+    ,width: float = 1
     ,xticklabels = None
     ,xlabel: str = None
     ,ylabel: str = None
     ,yLineLabel: str = None
     ,yLineLim = None
+    ,align = 'center'
     ,grid = False
     ,title: str = None
     ,tightLayout = False
+    ,edgecolor = None
     ,save: bool = False
     ,savepath: str = ".\\barplot.png"
     ,show: bool = False
@@ -467,7 +476,7 @@ def barplot(
         ax = fig.add_subplot(1,1,1)
     else:
         ax = ax
-    rects = ax.bar(x, y)
+    rects = ax.bar(x, y, width = width, align = align, edgecolor = edgecolor)
 
     # plot a line if appropriate
     if yLine is not None:
@@ -527,6 +536,8 @@ def barplot(
         plt.close()
 
     return (fig, ax)
+
+
 
 # ----------------------------------------
 # plot a scatter plot between two quantities colored by a third
