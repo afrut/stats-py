@@ -81,6 +81,8 @@ if __name__ == '__main__':
 
     mu = stats.binom.mean(n, p)
     sigmasq = stats.binom.var(n, p)
+    assert(round(mu - (n * p), 6) == 0)
+    assert(round(sigmasq - (n * p * (1 - p)), 6) == 0)
     print('{0}The mean of this binomial distribution is {1:.4}'.format(space, mu))
     print('{0}The variance of this binomial distribution is {1:.4}'.format(space, sigmasq))
 
@@ -144,8 +146,10 @@ if __name__ == '__main__':
 
     mu = stats.geom.mean(p)
     sigmasq = stats.geom.var(p)
-    print('{0}The mean of this geomial distribution is {1:.4}'.format(space, mu))
-    print('{0}The variance of this geomial distribution is {1:.4}'.format(space, sigmasq))
+    assert(round(mu - (1 / p), 6) == 0)
+    assert(round(sigmasq - ((1 - p) / p**2), 6) == 0)
+    print('{0}The mean of this geometric distribution is {1:.4}'.format(space, mu))
+    print('{0}The variance of this geometric distribution is {1:.4}'.format(space, sigmasq))
 
     x = np.array(x)
     probs = np.array(probs)
@@ -207,6 +211,13 @@ if __name__ == '__main__':
     assert(0.058 == round(probcum,3))
     print('{0}The probability that E occurs exactly {1} times by the <= {2}th event is {3:.4}'\
         .format(space, k, n, prob))
+
+    mu = stats.nbinom.mean(k, p, k)
+    sigmasq = stats.nbinom.var(k, p)
+    assert(round(mu - (k / p), 6) == 0)
+    assert(round(sigmasq - (k * (1 - p) / p**2), 6) == 0)
+    print('{0}The mean of this negative binomial distribution is {1:.4}'.format(space, mu))
+    print('{0}The variance of this negative binomial distribution is {1:.4}'.format(space, sigmasq))
 
     x = np.array(x)
     probs = np.array(probs)
