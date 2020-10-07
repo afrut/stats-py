@@ -25,7 +25,7 @@ if __name__ == '__main__':
     # Plotting Parameters
     # ----------------------------------------------------------------------
     edgecolor = np.array([0.121568627,0.466666667,0.705882353]) / 1.6   # color of the edges of the bar graph rectangles
-    show = False                                                        # whether or not to show plots
+    show = True                                                        # whether or not to show plots
 
     # ----------------------------------------------------------------------
     #
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     # probability mass function
     # ----------------------------------------
     p = 0.1     # the probability of an event E occurring
-    x = 2       # the number of times E occurs
     n = 18      # in this many trials
+    x = 2       # the number of times E occurs
     print('{0}An event E occurs with a probability of {1}.'.format(space, p))
     prob = stats.binom.pmf(x, n, p)
     prob2 = ct.comb(n, x) * p**x * (1 - p)**(n - x)
@@ -66,9 +66,9 @@ if __name__ == '__main__':
     # plotting
     # ----------------------------------------
     xs = np.array(xs)
-    probs = np.array(probs)
+    probs = np.array(probs).round(4)
     plots.barplot(xs, probs
-        ,title = 'Binomial Distribution; p = {0:.8}, n = {1}, x = {2}'.format(p, n, x)
+        ,title = 'Binomial Distribution; p = {0:.8}, n = {1}'.format(p, n)
         ,align = 'edge'
         ,edgecolor = edgecolor
         ,show = False, close = False)
@@ -148,9 +148,9 @@ if __name__ == '__main__':
     # plotting
     # ----------------------------------------
     xs = np.array(xs)
-    probs = np.array(probs)
+    probs = np.array(probs).round(4)
     plots.barplot(xs, probs
-        ,title = 'Geometric Distribution; p = {0:.8}, n = {1}, x = {2}'.format(p, n, x)
+        ,title = 'Geometric Distribution; p = {0:.8}'.format(p)
         ,align = 'edge'
         ,edgecolor = edgecolor
         ,show = False, close = False)
@@ -207,11 +207,10 @@ if __name__ == '__main__':
     # ----------------------------------------
     # probability mass function
     # ----------------------------------------
-    p = 0.1
-    x = 10          # number of events
+    p = 0.1         # probability of event E occurring
     r = 4           # number of occurrences of event E
+    x = 10          # number of events
     pplot = p
-    xplot = x
     rplot = r
     print('{0}An event E occurs with a probability of {1}.'.format(space, p))
     # pmf(num trials - num event E, num event E, probability)
@@ -231,10 +230,10 @@ if __name__ == '__main__':
     # plotting
     # ----------------------------------------
     xs = np.array(xs)
-    probs = np.array(probs)
+    probs = np.array(probs).round(4)
     plots.barplot(xs, probs
-        ,title = 'Negative Binomial Distribution; p = {0:.8}, n = {1}, r = {2}'\
-            .format(pplot, xplot, rplot)
+        ,title = 'Negative Binomial Distribution; p = {0:.8}, r = {1}'\
+            .format(pplot, rplot)
         ,align = 'edge'
         ,edgecolor = edgecolor
         ,show = False, close = False)
@@ -316,7 +315,7 @@ if __name__ == '__main__':
     # plotting
     # ----------------------------------------
     xs = np.array(xs)
-    probs = np.array(probs)
+    probs = np.array(probs).round(4)
     plots.barplot(xs, probs
         ,title = 'Hypergeometric Distribution; N = {0}, K = {1}, n = {2}'.format(N, K, n)
         ,align = 'edge'
@@ -398,7 +397,7 @@ if __name__ == '__main__':
     # plotting
     # ----------------------------------------
     xs = np.array(xs)
-    probs = np.array(probs)
+    probs = np.array(probs).round(4)
     plots.barplot(xs, probs
         ,title = 'Poisson Distribution; lamb = {0}, T = {1}'.format(lamb, T)
         ,align = 'edge'
