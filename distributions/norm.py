@@ -49,25 +49,25 @@ if __name__ == '__main__':
     x = 5
     print('{0}A random variable X is normally distributed'.format(space) +
         ' with mu = {0} and sigma = {1}.'.format(mu, sigma))
-    prob = stats.norm.pdf(x, mu, sigma)
-    prob2 = 1/(math.sqrt(2 * math.pi) * sigma) * math.exp(-(x - mu)**2 * (1 / (2 * sigma**2)))
-    assert(round(prob - prob2, 8) == 0)
-    print('{0}The probability of encountering x = {1} is {2:.8}.'\
-        .format(space, x, prob))
-    probs = list()
+    pdfval = stats.norm.pdf(x, mu, sigma)
+    pdfval2 = 1/(math.sqrt(2 * math.pi) * sigma) * math.exp(-(x - mu)**2 * (1 / (2 * sigma**2)))
+    assert(round(pdfval - pdfval2, 8) == 0)
+    print('{0}The value of the probability density function at x = {1} is {2:.8}.'\
+        .format(space, x, pdfval))
+    pdfvals = list()
     xs = np.arange(mu - 5, mu + 5 + 1, (mu / 10))
     for xl in xs:
-        prob = stats.norm.pdf(xl, mu, sigma)
-        probs.append(prob)
-        print('{0}The probability of encountering x = {1} is {2:.8}.'\
-            .format(space, xl, prob))
+        pdfval = stats.norm.pdf(xl, mu, sigma)
+        pdfvals.append(pdfval)
+        print('{0}The value of the probability density function at x = {1} is {2:.8}.'\
+            .format(space, xl, pdfval))
 
     # ----------------------------------------
     # plotting
     # ----------------------------------------
     xs = np.array(xs)
-    probs = np.array(probs).round(4)
-    plots.barplot(xs, probs
+    pdfvals = np.array(pdfvals).round(4)
+    plots.barplot(xs, pdfvals
         ,title = 'Normal Distribution; mu = {0:.8}, sigma = {1}'.format(mu, sigma)
         ,align = 'edge'
         ,edgecolor = edgecolor
