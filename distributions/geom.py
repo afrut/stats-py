@@ -26,6 +26,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------
     edgecolor = np.array([0.121568627,0.466666667,0.705882353]) / 1.6   # color of the edges of the bar graph rectangles
     show = False                                                        # whether or not to show plots
+    close = True                                                        # whether or not to close plots
 
     # ----------------------------------------------------------------------
     #
@@ -104,3 +105,8 @@ if __name__ == '__main__':
     print('{0}The mean of this geometric distribution is {1:.8}'.format(space, mu))
     print('{0}The variance of this geometric distribution is {1:.8}'.format(space, sigmasq))
     print('')
+
+    if show:
+        plt.show()
+    if close:
+        plt.close()
