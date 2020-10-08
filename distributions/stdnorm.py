@@ -83,9 +83,33 @@ if __name__ == '__main__':
     probcum2 = probs * h
     probcum2 = probcum2.sum()
     assert(round(abs(probcum - probcum2), 4) == 0)
-    print('{0}The probability that x <= {1} P(x <= {2}) = {3:.8}'.format(space, x, x, probcum))
+    print('{0}The probability that z <= {1} P(Z <= {2}) = {3:.8}'.format(space, x, x, probcum))
+    print('')
 
+    # ----------------------------------------
+    # some sample calculations
+    # ----------------------------------------
+    z = 1.26
+    prob = stats.norm.cdf(z)
+    print('{0}P(Z <= {1}) = {2:.8}'.format(space, z, prob))
+    assert(0.89617 - round(prob, 5) == 0)
 
+    prob = 1 - prob
+    print('{0}P(Z > {1}) = {2:.8}'.format(space, z, prob))
+    assert(0.10383 - round(prob, 5) == 0)
+
+    z = -0.86
+    prob = stats.norm.cdf(z)
+    print('{0}P(Z < {1}) = {2:.8}'.format(space, z, prob))
+    assert(0.19489 - round(prob, 5) == 0)
+
+    z1 = -1.25
+    z2 = 0.37
+    prob1 = stats.norm.cdf(z1)
+    prob2 = stats.norm.cdf(z2)
+    prob = prob2 - prob1
+    print('{0}P({1} < Z < {2}) = {3:.8}'.format(space, z1, z2, prob))
+    assert(0.53866 - round(prob, 5) == 0)
 
 
 
