@@ -12,8 +12,11 @@ import math
 def prod(ls: list) -> int:
     return np.prod(ls)
 
-def permRepeat(n: int) -> int:
-    return n**n
+def permRepeat(n: int, r: int = None) -> int:
+    if r is not None:
+        return n**r
+    else:
+        return n**n
 
 def perm(n: int = None, r: int = None, ls: list = None) -> int:
     if r != None:
