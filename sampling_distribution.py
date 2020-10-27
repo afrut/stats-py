@@ -1,9 +1,12 @@
-# import necessary libraries
+#exec(open('sampling_distribution.py').read())
 import subprocess as sp
 import scipy.stats as stats
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+
+# TODO: use standard plotting functions
+# TODO: add sampling distribution of the difference between two means
 
 sp.call( 'cls', shell=True )        # clear screen
 
