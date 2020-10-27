@@ -1,2 +1,13 @@
-counting_techniques
-distributions
+# ----------------------------------------------------------------------
+# 
+# Order of Viewing
+#
+# The scripts in this repository were intended to be viewed/learned
+# from int he following order.
+# 
+# ----------------------------------------------------------------------
+counting_techniques.py
+distributions\
+covariance.py
+descriptive.py
+sampling_distribution.py
