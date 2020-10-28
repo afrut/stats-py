@@ -27,7 +27,7 @@ print( 'Population range = [' +
        str( round( min( population ), 2 ) ) + ',' +
        str( round( max( population ), 2 ) ) + ']' )
 print( '' )
-dfPopulation = pd.DataFrame( population, columns = ['Population Distribution'] )
+dfPopulation = pd.DataFrame( population, columns = ['height'] )
 
 # ----------------------------------------------------------------------
 # 

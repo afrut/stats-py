@@ -11,3 +11,4 @@ distributions\
 covariance.py
 descriptive.py
 sampling_distribution.py
+bootstrap.py
