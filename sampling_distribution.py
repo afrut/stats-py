@@ -41,7 +41,7 @@ dfPopulation = pd.DataFrame( population, columns = ['height'] )
 # get a sample from from the population with sample size of n
 n = 50
 sample = np.random.choice( population, size = n )
-dfSample = pd.DataFrame( sample, columns = ['Individual Sample'] )
+dfSample = pd.DataFrame( sample, columns = ['height'] )
 xbar = round( np.mean( sample ), 2 )        # sample mean
 sx = round( np.std( sample, ddof = 0 ), 2 ) # sample standard deviation
 print( 'Sample mean = ' + str( round( xbar, 2 ) ) )
@@ -79,7 +79,7 @@ lsXBar = list()
 for cnt in range( 0, 100000 ):
     sample = np.random.choice( population, size = n )
     lsXBar.append( np.mean( sample ) )
-dfSamplingDist = pd.DataFrame( lsXBar, columns = ['Sampling Distribution'] )
+dfSamplingDist = pd.DataFrame( lsXBar, columns = ['height'] )
 xbars = np.array( lsXBar )
 sexbar = round( np.std( xbars ), 2 )
 sexbarCalc = round( sigma / ( np.sqrt( n ) ), 2 )

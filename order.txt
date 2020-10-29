@@ -12,3 +12,4 @@ covariance.py
 descriptive.py
 sampling_distribution.py
 bootstrap.py
+confidence_intervals.py
