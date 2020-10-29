@@ -55,7 +55,8 @@ if __name__ == '__main__':
         ,align = 'edge'
         ,edgecolor = edgecolor
         ,show = False, close = False)
-    fig, ax2 = plots.scatter(xs2 + 0.5, proba, fig = fig, axesNew = True, markersize = 0, linewidth = 2)
+    ax2 = ax1.twinx()
+    fig, ax2 = plots.scatter(xs2 + 0.5, proba, fig = fig, ax = ax2, markersize = 0, linewidth = 2)
     ax2.set_title('')
     print('')
 
@@ -113,4 +114,4 @@ if __name__ == '__main__':
     if show:
         plt.show()
     if close:
-        plt.close()exec(open('distributions\\binomNormApprox.py').read())
+        plt.close()

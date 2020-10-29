@@ -74,8 +74,9 @@ if __name__ == '__main__':
         ,edgecolor = edgecolor
         ,width = h
         ,show = False, close = False)
-    fig, ax2 = plots.scatter(xs, pdfvals, fig = fig, axesNew = True
-        ,yLim = ax1.get_ylim(), markersize = 0, linewidth = 2)
+    ax2 = ax1.twinx()
+    fig, ax2 = plots.scatter(xs, pdfvals, fig = fig, ax = ax1
+        ,ylim = ax1.get_ylim(), markersize = 0, linewidth = 2)
     ax2.set_title('')
 
     # ----------------------------------------
