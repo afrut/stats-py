@@ -58,9 +58,7 @@ if __name__ == '__main__':
     figsize = (14.4, 9)
 
     # ----------------------------------------------------------------------
-    # Plot the corrensponding normal distributions of the population and sampling
-    # distributions. NOTE: The sampling distribution is much "tighter" implying
-    # a smaller variance. Note that both are centered around the same value.
+    # Visualize one-sided vs two-sided confidence intervals.
     # ----------------------------------------------------------------------
     # get min/max values of population and create an array of x-values
     x = dfPop.loc[:, 'height'].values
@@ -68,6 +66,87 @@ if __name__ == '__main__':
     xmax = x.max()
     x = np.linspace(xmin, xmax, 500)
 
+    # define the significance level
+    alpha = 0.05
+
+    # calculate values of the probability function
+    y = stats.norm.pdf(x, loc = mu, scale = sigma)
+
+    # calculate the high and low values of x corresponding to a two-tailed
+    # confidence interval
+    xlo = stats.norm.ppf(alpha / 2, loc = mu, scale = sigma)
+    xhi = stats.norm.ppf(1 - (alpha / 2), loc = mu, scale = sigma)
+
+    # initialize plotting parameters
+    nplot = 1
+    nrow = 2
+    ncol = 2
+    fig = plt.figure(figsize = figsize)
+    ax = fig.add_subplot(nrow, ncol, nplot)
+
+    # plot the population distribution
+    plots.scatter(x, y
+        ,fig = fig
+        ,ax = ax
+        ,title = 'Two-sided Confidence Interval'
+        ,xlabel = 'height'
+        ,ylabel = 'f(x)'
+        ,linewidth = 2
+        ,markersize = 0)
+
+    # fill the areas corresponding to the significance level of a
+    # 2-sided confidence interval
+    xfill = x[x <= xlo]
+    yfill = y[x <= xlo]
+    ax.fill_between(xfill, yfill, color = plots.BLUE)
+    xfill = x[x >= xhi]
+    yfill = y[x >= xhi]
+    ax.fill_between(xfill, yfill, color = plots.BLUE)
+    nplot = nplot + 1
+
+    # fill areas corresponding to the significance level of an
+    # lower bound confidence interval
+    ax = fig.add_subplot(nrow, ncol, nplot)
+    plots.scatter(x, y
+        ,fig = fig
+        ,ax = ax
+        ,title = 'Lower Bound Confidence Interval'
+        ,markersize = 0
+        ,linewidth = 2
+        ,xlabel = 'height'
+        ,ylabel = 'f(x)'
+        ,color = plots.BLUE)
+    xlo = stats.norm.ppf(alpha, loc = mu, scale = sigma)
+    xfill = x[x <= xlo]
+    yfill = y[x <= xlo]
+    ax.fill_between(xfill, yfill, color = plots.BLUE)
+    nplot = nplot + 1
+
+    # fill areas corresponding to the significance level of an
+    # upper bound confidence interval
+    ax = fig.add_subplot(nrow, ncol, nplot)
+    plots.scatter(x, y
+        ,fig = fig
+        ,ax = ax
+        ,title = 'Upper Bound Confidence Interval'
+        ,markersize = 0
+        ,linewidth = 2
+        ,xlabel = 'height'
+        ,ylabel = 'f(x)'
+        ,color = plots.BLUE)
+    xhi= stats.norm.ppf(1 - alpha, loc = mu, scale = sigma)
+    xfill = x[x >= xhi]
+    yfill = y[x >= xhi]
+    ax.fill_between(xfill, yfill, color = plots.BLUE)
+    nplot = nplot + 1
+    fig.suptitle('Significance Level = alpha = {0:.2}'.format(alpha))
+    fig.tight_layout()
+
+    # ----------------------------------------------------------------------
+    # Plot the corrensponding normal distributions of the population and sampling
+    # distributions. NOTE: The sampling distribution is much "tighter" implying
+    # a smaller variance. Note that both are centered around the same value.
+    # ----------------------------------------------------------------------
     # calculate normal probability density function of sampling distribution
     # by using sigma/sqrt(n) as the sampling distribution variance
     ysamp = pdfnorm(x, sampDistMu, sampDistSigma)
@@ -111,8 +190,6 @@ if __name__ == '__main__':
     # range of x values that represent a 1 - alpha probability with respect
     # to the sampling distribution.
     # ----------------------------------------------------------------------
-    alpha = 0.05
-
     # calculate the upper and lower z values that represent the standardized
     # upper and lower limits of the confidence interval
     zlo = stats.norm.ppf(alpha / 2)
@@ -325,7 +402,7 @@ if __name__ == '__main__':
 
     legend =\
     [
-         mpl.lines.Line2D([0], [0], color = plots.BLUE, linewidth = 2, label = 'Standard Normal')
+         mpl.lines.Line2D([0], [0], color = plots.BLUE, linewidth = 2, label = 'Standard Normal Population Distribution')
         ,mpl.lines.Line2D([0], [0], color = plots.RED, linewidth = 2, label = 't Distribution')
         ,mpl.lines.Line2D([0], [0], color = plots.LIGHT_RED, linewidth = 1.25, linestyle = 'dashed', label = 'Sampling Distribution Mean')
         ,mpl.patches.Patch(facecolor = plots.RED, label = '{0}% Probability Interval'.format(int((1 - alpha) * 100)))
