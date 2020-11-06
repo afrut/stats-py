@@ -6,10 +6,25 @@
 # from int he following order.
 # 
 # ----------------------------------------------------------------------
-counting_techniques.py
-distributions\
-covariance.py
-descriptive.py
-sampling_distribution.py
-bootstrap.py
-confidence_intervals.py
+basic_probability.ipynb
+    counting_techniques.py
+probability_distributions.ipynb
+binomial_distribution.ipynb
+geometric_distribution.ipynb
+hypergeometric_distribution.ipynb
+negative_bionomial_distribution.ipynb
+poisson_distribution.ipynb
+normal_distribution.ipynb
+exponential_distribution.ipynb
+    distributions\
+joint_probability_distributions.ipynb
+    covariance.py
+descriptive_statistics.ipynb
+    descriptive.py
+point_estimation.ipynb
+    sampling_distribution.py
+    bootstrap.py
+confidence_intervals.ipynb
+    confidence_intervals.py
+hypothesis_testing.ipynb
+    hypothesis_testing.py
