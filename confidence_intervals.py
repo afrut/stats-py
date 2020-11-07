@@ -188,19 +188,19 @@ if __name__ == '__main__':
     # Calculate the sampling distribution's properties given that we know
     # the standard deviation of the population
     # ----------------------------------------------------------------------
+    n = 20
     sampDistMu = mu
     sampDistSigma = sigma / math.sqrt(n)
 
     # ----------------------------------------------------------------------
     # Visualize one-sided vs two-sided confidence intervals.
     # ----------------------------------------------------------------------
-    n = 20
     figsize = (14.4, 9)
 
     # define the minimum and maximum x values for the sampling distribution
     # to be 3 times the sampling distribution's standard deviation
-    xmin = mu - 3 * (sigma / math.sqrt(n))
-    xmax = mu + 3 * (sigma / math.sqrt(n))
+    xmin = mu - 4 * (sigma / math.sqrt(n))
+    xmax = mu + 4 * (sigma / math.sqrt(n))
 
     # create an array of x-values over which to calculate the pdf values of the
     # sampling distribution
@@ -286,6 +286,45 @@ if __name__ == '__main__':
     ax.fill_between(xfill, yfill, color = plots.BLUE)
     nplot = nplot + 1
     fig.suptitle('Sampling Distrubitions with alpha = {0:.2}'.format(alpha))
+    fig.tight_layout()
+
+    # ----------------------------------------------------------------------
+    # Student's t Distribution vs standard normal distribution
+    # ----------------------------------------------------------------------
+    # Calculate the probability density fucntion values for the sampling
+    # distribution with known standard deviation
+    yz = stats.norm.pdf(x, loc = sampDistMu, scale = sampDistSigma)
+
+    # Draw a sample and caluculate the sample standard deviation.
+    sample = np.random.choice(population, size = n)
+    s = sample.std(ddof = 1)
+
+    # Calculate the probability density function values for the t distribution.
+    # df = n - 1 specifies to use n - 1 degrees of freedom
+    yt = stats.t.pdf(x, df = n - 1, loc = mu, scale = s / math.sqrt(n))
+
+    # Visualize Student's t Distribution and compare to the population distribution
+    # NOTE: Different samples yield different t distributions since t distributions
+    # are dependent on the sample standard deviation s. The sample standard
+    # deviation is a random variable that can change from sample to sample.
+    ylim = (0, max(yz.max(), yt.max()))
+    fig, ax = plots.scatter(x, yz
+        ,figsize = figsize
+        ,ylim = ylim
+        ,xlabel = 'height'
+        ,ylabel = 'f(x)'
+        ,linewidth = 2
+        ,markersize = 0
+        ,color = plots.BLUE)
+    plots.scatter(x, yt
+        ,fig = fig
+        ,ax = ax
+        ,ylim = ylim
+        ,title = ''
+        ,linewidth = 2
+        ,markersize = 0
+        ,color = plots.RED)
+    ax.set_title('t Distribution vs Standard Normal Distribution')
     fig.tight_layout()
 
     # ----------------------------------------------------------------------
@@ -433,7 +472,7 @@ if __name__ == '__main__':
     fig.tight_layout()
 
     # ----------------------------------------------------------------------
-    # Student's t Distribution as Compared to the Standard Normal Distribution
+    # Student's t Distribution vs the population distribution
     # ----------------------------------------------------------------------
     # Calculate probability density function values for the standard normal distribution
     yz = stats.norm.pdf(x, loc = mu, scale = sigma)
@@ -446,7 +485,7 @@ if __name__ == '__main__':
     # df = n - 1 specifies to use n - 1 degrees of freedom
     yt = stats.t.pdf(x, df = n - 1, loc = mu, scale = s / math.sqrt(n))
 
-    # Visualize Student's t Distribution and compare to the standard normal distribution
+    # Visualize Student's t Distribution and compare to the population distribution
     ylim = (0, max(yz.max(), yt.max()))
     fig, ax = plots.scatter(x, yz
         ,figsize = figsize
