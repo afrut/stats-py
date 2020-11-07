@@ -594,4 +594,37 @@ if __name__ == '__main__':
     ax.set_title('{0} Confidence Intervals using a t Distribution'.format(nDraw))
     fig.tight_layout()
 
-    plt.show()
+    # ----------------------------------------------------------------------
+    # Define all heights below the 20th percentile as a class of interest.
+    # ----------------------------------------------------------------------
+    x20 = np.percentile(population, 20)
+
+    # true proportion of population belonging to class of interest
+    p = 0.2
+
+    # define a sample size and draw a sample
+    n = 30
+    sample = np.random.choice(population, size = n)
+
+    # find the proportion of items that belong to the class of interest in the sample
+    psamp = len(sample[sample <= x20]) / n
+
+    # approximate normal sampling distribution
+    sampmean = psamp
+    sampstd = math.sqrt(p * (1 - p) / n)
+    print('Sample proportion as mean = {0:.4}'.format(sampmean))
+    print('Sample standard deviation = {0:.4}'.format(sampstd))
+
+    # two-sided confidence interval
+    xlo, xhi = twoTail(alpha, n = n, sampmean = sampmean, sigma = sampstd)
+    print('Two-sided confidence interval = {0:.4} <= x <= {1:.4}'.format(xlo, xhi))
+
+    # one-sided lower-bound confidence interval
+    xlo = oneTailLo(alpha, n = n, sampmean = sampmean, sigma = sampstd)
+    print('One-sided lower-bound confidence interval = x >= {0:.4}'.format(xlo))
+
+    # one-sided upper-bound confidence interval
+    xhi = oneTailHi(alpha, n = n, sampmean = sampmean, sigma = sampstd)
+    print('One-sided upper-bound confidence interval = x <= {0:.4}'.format(xhi))
+
+    #plt.show()
