@@ -9,8 +9,157 @@ import math
 import scipy.stats as stats
 import plots
 
+# ----------------------------------------------------------------------
+# Function to calculate the probability density function values of the normal
+# distribution.
+# ----------------------------------------------------------------------
 def pdfnorm(x, mu, sigma):
     return 1 / (math.sqrt(2 * math.pi) * sigma) * np.exp(-((x - mu)**2) / (2 * sigma**2))
+
+# ----------------------------------------------------------------------
+# Two-tail confidence intervals
+# ----------------------------------------------------------------------
+def twoTail(alpha, n = None, sampmean = None, sigma = None, sampstd = None, samp = None):
+    ret = None
+
+    if n == None and samp is not None:
+        n = len(samp)
+
+    # check if a sample mean has been passed in
+    if sampmean is None and samp is not None:
+        sampmean = samp.mean()
+
+    # check if the population standard deviation is unknown
+    if sigma == None:
+
+        # t distribution always needs the sample size for degrees of freedom
+        assert(n is not None)
+
+        # use t distribution
+        tlo = stats.t.ppf(alpha / 2, df = n - 1)
+        thi = stats.t.ppf(1 - (alpha / 2), df = n - 1)
+
+        # check if sample standard deviation is provided or can be calculated
+        if sampstd == None and samp is not None:
+            sampstd = samp.std(ddof = 1)
+
+        # check if x values or t values are to be returned
+        if sampmean is not None and sampstd is not None:
+            xlo = sampmean + (tlo * (sampstd / math.sqrt(n)))
+            xhi = sampmean + (thi * (sampstd / math.sqrt(n)))
+            ret = (xlo, xhi)
+        else:
+            ret = (thi, tlo)
+
+    else:
+
+        # use standard normal distribution
+        zlo = stats.norm.ppf(alpha / 2)
+        zhi = stats.norm.ppf(1 - (alpha / 2))
+
+        # check if x values or z values are to be returned
+        if sampmean is not None and n is not None:
+            xlo = sampmean + (zlo * (sigma / math.sqrt(n)))
+            xhi = sampmean + (zhi * (sigma / math.sqrt(n)))
+            ret = (xlo, xhi)
+        else:
+            ret = (zlo, zhi)
+
+    return ret
+
+# ----------------------------------------------------------------------
+# One-tail lower-bound confidence intervals
+# ----------------------------------------------------------------------
+def oneTailLo(alpha, n = None, sampmean = None, sigma = None, sampstd = None, samp = None):
+    ret = None
+
+    if n == None and samp is not None:
+        n = len(samp)
+
+    # check if a sample mean has been passed in
+    if sampmean is None and samp is not None:
+        sampmean = samp.mean()
+
+    # check if the population standard deviation is unknown
+    if sigma == None:
+
+        # t distribution always needs the sample size for degrees of freedom
+        assert(n is not None)
+
+        # use t distribution
+        tlo = stats.t.ppf(alpha, df = n - 1)
+
+        # check if sample standard deviation is provided or can be calculated
+        if sampstd == None and samp is not None:
+            sampstd = samp.std(ddof = 1)
+
+        # check if x values or t values are to be returned
+        if sampmean is not None and sampstd is not None:
+            xlo = sampmean + (tlo * (sampstd / math.sqrt(n)))
+            ret = xlo
+        else:
+            ret = tlo
+
+    else:
+
+        # use standard normal distribution
+        zlo = stats.norm.ppf(alpha)
+
+        # check if x values or z values are to be returned
+        if sampmean is not None and n is not None:
+            xlo = sampmean + (zlo * (sigma / math.sqrt(n)))
+            ret = xlo
+        else:
+            ret = zlo
+
+    return ret
+
+# ----------------------------------------------------------------------
+# One-tail upper-bound confidence intervals
+# ----------------------------------------------------------------------
+def oneTailHi(alpha, n = None, sampmean = None, sigma = None, sampstd = None, samp = None):
+    ret = None
+
+    if n == None and samp is not None:
+        n = len(samp)
+
+    # check if a sample mean has been passed in
+    if sampmean is None and samp is not None:
+        sampmean = samp.mean()
+
+    # check if the population standard deviation is unknown
+    if sigma == None:
+
+        # t distribution always needs the sample size for degrees of freedom
+        assert(n is not None)
+
+        # use t distribution
+        thi = stats.t.ppf(1 - alpha, df = n - 1)
+
+        # check if sample standard deviation is provided or can be calculated
+        if sampstd == None and samp is not None:
+            sampstd = samp.std(ddof = 1)
+
+        # check if x values or t values are to be returned
+        if sampmean is not None and sampstd is not None:
+            xhi = sampmean + (thi * (sampstd / math.sqrt(n)))
+            ret = xhi
+        else:
+            ret = thi
+
+    else:
+
+        # use standard normal distribution
+        zhi = stats.norm.ppf(1 - alpha)
+
+        # check if x values or z values are to be returned
+        if sampmean is not None and n is not None:
+            xhi = sampmean + (zhi * (sigma / math.sqrt(n)))
+            ret = xhi
+        else:
+            ret = zhi
+
+    return ret
 
 if __name__ == '__main__':
     sp.call('cls', shell = True)
@@ -36,46 +185,40 @@ if __name__ == '__main__':
     dfPop = pd.DataFrame(population, columns = ['height'])
 
     # ----------------------------------------------------------------------
-    # Create the sampling distribution
+    # Calculate the sampling distribution's properties given that we know
+    # the standard deviation of the population
     # ----------------------------------------------------------------------
-    lsx = list()
-    n = 20
-    for cnt in range(0, 100000):
-        samp = np.random.choice(population, size = n)
-        lsx.append(np.mean(samp))
-    dfSampDist = pd.DataFrame(lsx, columns = ['height'])
-    x = np.array(lsx)
-    x.sort()
-    sampDistMu = x.mean()
+    sampDistMu = mu
     sampDistSigma = sigma / math.sqrt(n)
-    ex = round(x.mean(), 2)
-    sex = round(np.std(x), 2)
-    print('Sampling Distribution:')
-    print('E(sampMean) = {0:.8}'.format(ex))
-    print('SE(sampMean) = {0:.8}'.format(sex))
-    print('')
-
-    figsize = (14.4, 9)
 
     # ----------------------------------------------------------------------
     # Visualize one-sided vs two-sided confidence intervals.
     # ----------------------------------------------------------------------
-    # get min/max values of population and create an array of x-values
-    x = dfPop.loc[:, 'height'].values
-    xmin = x.min()
-    xmax = x.max()
+    n = 20
+    figsize = (14.4, 9)
+
+    # define the minimum and maximum x values for the sampling distribution
+    # to be 3 times the sampling distribution's standard deviation
+    xmin = mu - 3 * (sigma / math.sqrt(n))
+    xmax = mu + 3 * (sigma / math.sqrt(n))
+
+    # create an array of x-values over which to calculate the pdf values of the
+    # sampling distribution
     x = np.linspace(xmin, xmax, 500)
 
     # define the significance level
     alpha = 0.05
 
     # calculate values of the probability function
-    y = stats.norm.pdf(x, loc = mu, scale = sigma)
+    y = stats.norm.pdf(x, loc = mu, scale = sigma / math.sqrt(n))
 
     # calculate the high and low values of x corresponding to a two-tailed
     # confidence interval
-    xlo = stats.norm.ppf(alpha / 2, loc = mu, scale = sigma)
-    xhi = stats.norm.ppf(1 - (alpha / 2), loc = mu, scale = sigma)
+    xlotest = stats.norm.ppf(alpha / 2, loc = mu, scale = sampDistSigma)
+    xhitest = stats.norm.ppf(1 - (alpha / 2), loc = mu, scale = sampDistSigma)
+    xlo, xhi = twoTail(alpha, n = n, sampmean = mu, sigma = sigma)
+    assert(abs(xlo - xlotest) < 1e-8)
+    assert(abs(xhi - xhitest) < 1e-8)
 
     # initialize plotting parameters
     nplot = 1
@@ -116,7 +259,9 @@ if __name__ == '__main__':
         ,xlabel = 'height'
         ,ylabel = 'f(x)'
         ,color = plots.BLUE)
-    xlo = stats.norm.ppf(alpha, loc = mu, scale = sigma)
+    xlotest = stats.norm.ppf(alpha, loc = mu, scale = sampDistSigma)
+    xlo = oneTailLo(alpha, n = n, sampmean = mu, sigma = sigma)
+    assert(abs(xlo - xlotest) < 1e-8)
     xfill = x[x <= xlo]
     yfill = y[x <= xlo]
     ax.fill_between(xfill, yfill, color = plots.BLUE)
@@ -134,12 +279,13 @@ if __name__ == '__main__':
         ,xlabel = 'height'
         ,ylabel = 'f(x)'
         ,color = plots.BLUE)
-    xhi= stats.norm.ppf(1 - alpha, loc = mu, scale = sigma)
+    xhitest = stats.norm.ppf(1 - alpha, loc = mu, scale = sampDistSigma)
+    xhi = oneTailHi(alpha, n = n, sampmean = mu, sigma = sigma)
     xfill = x[x >= xhi]
     yfill = y[x >= xhi]
     ax.fill_between(xfill, yfill, color = plots.BLUE)
     nplot = nplot + 1
-    fig.suptitle('Significance Level = alpha = {0:.2}'.format(alpha))
+    fig.suptitle('Sampling Distrubitions with alpha = {0:.2}'.format(alpha))
     fig.tight_layout()
 
     # ----------------------------------------------------------------------
@@ -147,6 +293,11 @@ if __name__ == '__main__':
     # distributions. NOTE: The sampling distribution is much "tighter" implying
     # a smaller variance. Note that both are centered around the same value.
     # ----------------------------------------------------------------------
+    x = dfPop.values
+    xmin = x.min()
+    xmax = x.max()
+    x = np.linspace(xmin, xmax, 500)
+
     # calculate normal probability density function of sampling distribution
     # by using sigma/sqrt(n) as the sampling distribution variance
     ysamp = pdfnorm(x, sampDistMu, sampDistSigma)
@@ -190,15 +341,9 @@ if __name__ == '__main__':
     # range of x values that represent a 1 - alpha probability with respect
     # to the sampling distribution.
     # ----------------------------------------------------------------------
-    # calculate the upper and lower z values that represent the standardized
-    # upper and lower limits of the confidence interval
-    zlo = stats.norm.ppf(alpha / 2)
-    zhi = stats.norm.ppf(1 - (alpha / 2))
-
     # calculate the upper and lower x values that represent the
     # upper and lower limits of the confidence interval
-    xlo = zlo * sigma / math.sqrt(n) + sampDistMu
-    xhi = zhi * sigma / math.sqrt(n) + sampDistMu
+    xlo, xhi = twoTail(alpha, n = n, sampmean = sampDistMu, sigma = sigma)
 
     # create an array of x values that define the fill region
     xfill = np.linspace(xlo, xhi, 500)
@@ -217,7 +362,6 @@ if __name__ == '__main__':
     # NOTE: Not all confidence intervals contain the true mean mu.
     # ----------------------------------------------------------------------
     nDraw = 100     # number of samples to draw
-    n = 20          # sample size
 
     # Create an array of y positions where the confidence intervals are to be drawn.
     # Exclude that first and last points so as not to plot on the edges of the plotting area.
@@ -238,8 +382,7 @@ if __name__ == '__main__':
         sampMean = sample.mean()
 
         # calculate the confidence interval
-        cilo = zlo * sigma / math.sqrt(n) + sampMean
-        cihi = zhi * sigma / math.sqrt(n) + sampMean
+        cilo, cihi = twoTail(alpha, n = n, sampmean = sampMean, sigma = sigma)
 
         # count confidence intervals that do not contain
         # the sampling distribution mean
@@ -301,7 +444,7 @@ if __name__ == '__main__':
 
     # Calculate the probability density function values for the t distribution.
     # df = n - 1 specifies to use n - 1 degrees of freedom
-    yt = stats.t.pdf(x, df = n - 1, loc = mu, scale = s)
+    yt = stats.t.pdf(x, df = n - 1, loc = mu, scale = s / math.sqrt(n))
 
     # Visualize Student's t Distribution and compare to the standard normal distribution
     ylim = (0, max(yz.max(), yt.max()))
@@ -331,12 +474,11 @@ if __name__ == '__main__':
     thi = stats.t.ppf(1 - (alpha / 2), df = n - 1)
 
     # upper and lower limits of the confidence interval
-    xlo = tlo * sigma / math.sqrt(n) + sampDistMu
-    xhi = thi * sigma / math.sqrt(n) + sampDistMu
+    xlo, xhi = twoTail(alpha, n = n, sampmean = sampDistMu, sampstd = s)
 
     # create an array of x values that define the fill region
     xfill = np.linspace(xlo, xhi, 500)
-    yfill = stats.t.pdf(xfill, n - 1, loc = sampDistMu, scale = s)
+    yfill = stats.t.pdf(xfill, n - 1, loc = sampDistMu, scale = s / math.sqrt(n))
     ax.fill_between(xfill, yfill, color = plots.RED)
 
     # plot the mean of the sampling distribution
@@ -363,10 +505,10 @@ if __name__ == '__main__':
         # draw a sample
         sample = np.random.choice(population, size = n)
         sampMean = sample.mean()
+        s = sample.std(ddof = 1)
 
         # calculate the confidence interval
-        cilo = tlo * sigma / math.sqrt(n) + sampMean
-        cihi = thi * sigma / math.sqrt(n) + sampMean
+        cilo, cihi = twoTail(alpha, n = n, sampmean = sampMean, sampstd = s)
 
         # count confidence intervals that do not contain
         # the sampling distribution mean
@@ -412,9 +554,5 @@ if __name__ == '__main__':
     ax.legend(handles = legend)
     ax.set_title('{0} Confidence Intervals using a t Distribution'.format(nDraw))
     fig.tight_layout()
-
-
-
-
 
     plt.show()
