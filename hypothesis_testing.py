@@ -104,7 +104,7 @@ if __name__ == '__main__':
     mu0 = 175
     xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sigma)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x > {0:.5} , alpha = {1:.2}'.format(xlo, alpha))
+    print('Confidence Interval = x >= {0:.5} , alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
     else:
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     mu0 = 180
     xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sigma)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x > {0:.5}, alpha = {1:.2}'.format(xlo, alpha))
+    print('Confidence Interval = x >= {0:.5}, alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
     else:
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     mu0 = 175
     xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sampstd = sampstd)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x > {0:.5} , alpha = {1:.2}'.format(xlo, alpha))
+    print('Confidence Interval = x >= {0:.5} , alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
     else:
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     mu0 = 180
     xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sampstd = sampstd)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x > {0:.5}, alpha = {1:.2}'.format(xlo, alpha))
+    print('Confidence Interval = x >= {0:.5}, alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
     else:
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     mu0 = 175
     xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sigma)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x < {0:.5} , alpha = {1:.2}'.format(xhi, alpha))
+    print('Confidence Interval = x =< {0:.5} , alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
     else:
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     mu0 = 165
     xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sigma)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x < {0:.5}, alpha = {1:.2}'.format(xhi, alpha))
+    print('Confidence Interval = x =< {0:.5}, alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
     else:
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     mu0 = 175
     xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sampstd = sampstd)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x < {0:.5} , alpha = {1:.2}'.format(xhi, alpha))
+    print('Confidence Interval = x =< {0:.5} , alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
     else:
@@ -186,9 +186,101 @@ if __name__ == '__main__':
     mu0 = 165
     xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sampstd = sampstd)
     print('Sample mean = {0:.5}'.format(sampmean))
-    print('Confidence Interval = x < {0:.5}, alpha = {1:.2}'.format(xhi, alpha))
+    print('Confidence Interval = x =< {0:.5}, alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
     else:
         print('Fail to reject H0: mu0 = {0}'.format(mu0))
     print('')
+
+    print('----------------------------------------------------------------------')
+    print('  Hypothesis Tests for a Population Proportion')
+    print('----------------------------------------------------------------------')
+    # find the 20th percentile
+    x20 = np.percentile(population, 20)
+
+    # true proportion of population belonging to class of interest
+    p = 0.2
+
+    # define a sample size and draw a sample
+    n = 40
+    sample = np.random.choice(population, size = n)
+
+    # find the proportion of items that belong to the class of interest in the sample
+    psamp = len(sample[sample <= x20]) / n
+
+    # approximate normal sampling distribution
+    sampmean = psamp
+    sampstd = math.sqrt(p * (1 - p) / n)
+    print('Sample proportion as mean = {0:.4}'.format(sampmean))
+    print('Sample standard deviation = {0:.4}'.format(sampstd))
+    print('')
+
+    # ----------------------------------------------------------------------
+    # two-sided hypothesis test
+    # ----------------------------------------------------------------------
+    mu0 = 0.2
+    xlo, xhi = twoTail(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    print('Two-sided confidence interval = {0:.4} <= x <= {1:.4}'.format(xlo, xhi))
+    if psamp < xlo or psamp > xhi:
+        print('Reject H0: mu0 = {0} in favor of Ha: mu0 != {0}'.format(mu0))
+    else:
+        print('Fail to reject H0: mu0 = {0}'.format(mu0))
+    print('')
+
+    mu0 = 0.4
+    xlo, xhi = twoTail(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    print('Two-sided confidence interval = {0:.4} <= x <= {1:.4}'.format(xlo, xhi))
+    if psamp < xlo or psamp > xhi:
+        print('Reject H0: mu0 = {0} in favor of Ha: mu0 != {0}'.format(mu0))
+    else:
+        print('Fail to reject H0: mu0 = {0}'.format(mu0))
+    print('')
+
+    # ----------------------------------------------------------------------
+    # one-sided lower-bound hypothesis test
+    # ----------------------------------------------------------------------
+    mu0 = 0.2
+    xlo = oneTailLo(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    print('One-sided lower-bound confidence interval = x >= {0:.4}'.format(xlo))
+    if psamp < xlo:
+        print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
+    else:
+        print('Fail to reject H0: mu0 = {0}'.format(mu0))
+    print('')
+
+    mu0 = 0.4
+    xlo = oneTailLo(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    print('One-sided lower-bound confidence interval = x >= {0:.4}'.format(xlo))
+    if psamp < xlo:
+        print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
+    else:
+        print('Fail to reject H0: mu0 = {0}'.format(mu0))
+    print('')
+
+    # ----------------------------------------------------------------------
+    # one-sided upper-bound hypothesis test
+    # ----------------------------------------------------------------------
+    mu0 = 0.2
+    xhi = oneTailHi(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    print('One-sided upper-bound confidence interval = x <= {0:.4}'.format(xhi))
+    if psamp > xhi:
+        print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
+    else:
+        print('Fail to reject H0: mu0 = {0}'.format(mu0))
+    print('')
+
+    mu0 = 0.05
+    xhi = oneTailHi(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    print('One-sided upper-bound confidence interval = x <= {0:.4}'.format(xhi))
+    if psamp > xhi:
+        print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
+    else:
+        print('Fail to reject H0: mu0 = {0}'.format(mu0))
+    print('')
+
+
+
+    plt.show()
+
+    # TODO: add sample size calculations
