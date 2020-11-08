@@ -45,8 +45,8 @@ def twoTail(alpha, n = None, sampmean = None, sigma = None, sampstd = None, samp
 
         # check if x values or t values are to be returned
         if sampmean is not None and sampstd is not None:
-            xlo = sampmean + (tlo * (sampstd / math.sqrt(n)))
-            xhi = sampmean + (thi * (sampstd / math.sqrt(n)))
+            xlo = sampmean + (tlo * sampstd)
+            xhi = sampmean + (thi * sampstd)
             ret = (xlo, xhi)
         else:
             ret = (thi, tlo)
@@ -58,9 +58,9 @@ def twoTail(alpha, n = None, sampmean = None, sigma = None, sampstd = None, samp
         zhi = stats.norm.ppf(1 - (alpha / 2))
 
         # check if x values or z values are to be returned
-        if sampmean is not None and n is not None:
-            xlo = sampmean + (zlo * (sigma / math.sqrt(n)))
-            xhi = sampmean + (zhi * (sigma / math.sqrt(n)))
+        if sampmean is not None:
+            xlo = sampmean + (zlo * sigma)
+            xhi = sampmean + (zhi * sigma)
             ret = (xlo, xhi)
         else:
             ret = (zlo, zhi)
@@ -95,7 +95,7 @@ def oneTailLo(alpha, n = None, sampmean = None, sigma = None, sampstd = None, sa
 
         # check if x values or t values are to be returned
         if sampmean is not None and sampstd is not None:
-            xlo = sampmean + (tlo * (sampstd / math.sqrt(n)))
+            xlo = sampmean + (tlo * sampstd)
             ret = xlo
         else:
             ret = tlo
@@ -106,8 +106,8 @@ def oneTailLo(alpha, n = None, sampmean = None, sigma = None, sampstd = None, sa
         zlo = stats.norm.ppf(alpha)
 
         # check if x values or z values are to be returned
-        if sampmean is not None and n is not None:
-            xlo = sampmean + (zlo * (sigma / math.sqrt(n)))
+        if sampmean is not None:
+            xlo = sampmean + (zlo * sigma)
             ret = xlo
         else:
             ret = zlo
@@ -142,7 +142,7 @@ def oneTailHi(alpha, n = None, sampmean = None, sigma = None, sampstd = None, sa
 
         # check if x values or t values are to be returned
         if sampmean is not None and sampstd is not None:
-            xhi = sampmean + (thi * (sampstd / math.sqrt(n)))
+            xhi = sampmean + (thi * sampstd)
             ret = xhi
         else:
             ret = thi
@@ -153,8 +153,8 @@ def oneTailHi(alpha, n = None, sampmean = None, sigma = None, sampstd = None, sa
         zhi = stats.norm.ppf(1 - alpha)
 
         # check if x values or z values are to be returned
-        if sampmean is not None and n is not None:
-            xhi = sampmean + (zhi * (sigma / math.sqrt(n)))
+        if sampmean is not None:
+            xhi = sampmean + (zhi * sigma)
             ret = xhi
         else:
             ret = zhi
@@ -175,7 +175,9 @@ if __name__ == '__main__':
     population = np.random.randn(1000000) * sigma + mu;
     mu = np.mean(population)                # population mean
     sigma = np.std(population, ddof = 0)    # population standard deviation
-    print('Population Characteristics:')
+    print('----------------------------------------------------------------------')
+    print('  Population Characteristics:')
+    print('----------------------------------------------------------------------')
     print('Population mean = ' + str(round(mu, 2)))
     print('Population standard deviation = ' + str(round(sigma, 2)))
     print('Population range = [' +
@@ -216,7 +218,7 @@ if __name__ == '__main__':
     # confidence interval
     xlotest = stats.norm.ppf(alpha / 2, loc = mu, scale = sampDistSigma)
     xhitest = stats.norm.ppf(1 - (alpha / 2), loc = mu, scale = sampDistSigma)
-    xlo, xhi = twoTail(alpha, n = n, sampmean = mu, sigma = sigma)
+    xlo, xhi = twoTail(alpha, n = n, sampmean = mu, sigma = sigma/math.sqrt(n))
     assert(abs(xlo - xlotest) < 1e-8)
     assert(abs(xhi - xhitest) < 1e-8)
 
@@ -260,7 +262,7 @@ if __name__ == '__main__':
         ,ylabel = 'f(x)'
         ,color = plots.BLUE)
     xlotest = stats.norm.ppf(alpha, loc = mu, scale = sampDistSigma)
-    xlo = oneTailLo(alpha, n = n, sampmean = mu, sigma = sigma)
+    xlo = oneTailLo(alpha, n = n, sampmean = mu, sigma = sigma/math.sqrt(n))
     assert(abs(xlo - xlotest) < 1e-8)
     xfill = x[x <= xlo]
     yfill = y[x <= xlo]
@@ -280,7 +282,7 @@ if __name__ == '__main__':
         ,ylabel = 'f(x)'
         ,color = plots.BLUE)
     xhitest = stats.norm.ppf(1 - alpha, loc = mu, scale = sampDistSigma)
-    xhi = oneTailHi(alpha, n = n, sampmean = mu, sigma = sigma)
+    xhi = oneTailHi(alpha, n = n, sampmean = mu, sigma = sigma/math.sqrt(n))
     xfill = x[x >= xhi]
     yfill = y[x >= xhi]
     ax.fill_between(xfill, yfill, color = plots.BLUE)
@@ -382,7 +384,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------
     # calculate the upper and lower x values that represent the
     # upper and lower limits of the confidence interval
-    xlo, xhi = twoTail(alpha, n = n, sampmean = sampDistMu, sigma = sigma)
+    xlo, xhi = twoTail(alpha, n = n, sampmean = sampDistMu, sigma = sigma/math.sqrt(n))
 
     # create an array of x values that define the fill region
     xfill = np.linspace(xlo, xhi, 500)
@@ -421,7 +423,7 @@ if __name__ == '__main__':
         sampMean = sample.mean()
 
         # calculate the confidence interval
-        cilo, cihi = twoTail(alpha, n = n, sampmean = sampMean, sigma = sigma)
+        cilo, cihi = twoTail(alpha, n = n, sampmean = sampMean, sigma = sigma/math.sqrt(n))
 
         # count confidence intervals that do not contain
         # the sampling distribution mean
@@ -451,9 +453,11 @@ if __name__ == '__main__':
             ,linewidth = linewidth
             ,color = color)
 
+    print('----------------------------------------------------------------------')
+    print('  Results of Multiple Confidence Intervals')
+    print('----------------------------------------------------------------------')
     print('Out of {0} samples, {1} standard normal confidence intervals do not contain the sampling distribution mean.'\
         .format(nDraw, cntNoMean))
-    print('')
 
     # format plot
     legend =\
@@ -513,7 +517,7 @@ if __name__ == '__main__':
     thi = stats.t.ppf(1 - (alpha / 2), df = n - 1)
 
     # upper and lower limits of the confidence interval
-    xlo, xhi = twoTail(alpha, n = n, sampmean = sampDistMu, sampstd = s)
+    xlo, xhi = twoTail(alpha, n = n, sampmean = sampDistMu, sampstd = s/math.sqrt(n))
 
     # create an array of x values that define the fill region
     xfill = np.linspace(xlo, xhi, 500)
@@ -547,7 +551,7 @@ if __name__ == '__main__':
         s = sample.std(ddof = 1)
 
         # calculate the confidence interval
-        cilo, cihi = twoTail(alpha, n = n, sampmean = sampMean, sampstd = s)
+        cilo, cihi = twoTail(alpha, n = n, sampmean = sampMean, sampstd = s/math.sqrt(n))
 
         # count confidence intervals that do not contain
         # the sampling distribution mean
@@ -594,9 +598,10 @@ if __name__ == '__main__':
     ax.set_title('{0} Confidence Intervals using a t Distribution'.format(nDraw))
     fig.tight_layout()
 
-    # ----------------------------------------------------------------------
-    # Define all heights below the 20th percentile as a class of interest.
-    # ----------------------------------------------------------------------
+    print('----------------------------------------------------------------------')
+    print('  Confidence Intervals on a Population Proportion')
+    print('----------------------------------------------------------------------')
+    # find the 20th percentile
     x20 = np.percentile(population, 20)
 
     # true proportion of population belonging to class of interest
@@ -611,7 +616,7 @@ if __name__ == '__main__':
 
     # approximate normal sampling distribution
     sampmean = psamp
-    sampstd = math.sqrt(p * (1 - p) / n)
+    sampstd = math.sqrt(psamp * (1 - psamp) / n)
     print('Sample proportion as mean = {0:.4}'.format(sampmean))
     print('Sample standard deviation = {0:.4}'.format(sampstd))
 
@@ -626,5 +631,15 @@ if __name__ == '__main__':
     # one-sided upper-bound confidence interval
     xhi = oneTailHi(alpha, n = n, sampmean = sampmean, sigma = sampstd)
     print('One-sided upper-bound confidence interval = x <= {0:.4}'.format(xhi))
+    print('')
+
+    print('----------------------------------------------------------------------')
+    print('  Sample Size Calculations')
+    print('----------------------------------------------------------------------')
+    # TODO: add sample size calculations
+
+
+
+
 
     #plt.show()
