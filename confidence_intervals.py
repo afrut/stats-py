@@ -636,10 +636,53 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     print('  Sample Size Calculations')
     print('----------------------------------------------------------------------')
-    # TODO: add sample size calculations
+    # find sample size so that sample mean and population mean do not differ
+    # by more than E
+    E = 0.8
+    n = math.ceil((stats.norm.ppf(1 - (alpha / 2)) * sigma / E)**2)
 
+    # sample multiple times and count how many times the  difference between
+    # sample mean and population mean exceed E
+    nOut = 0
+    for cnt in range(nDraw):
+        sample = np.random.choice(population, size = n)
+        if abs(sample.mean() - mu) > E:
+            nOut = nOut + 1
+    print('Using a sample size n = {0},'.format(n))
+    print('    the number of sample means that differ from population mean by more than {0}'
+        .format(E) + ' is {0}'.format(nOut))
 
+    # find sample size so that minimum deviation from sample mean and
+    # population mean is no less than E
+    E = -0.8
+    n = math.ceil((stats.norm.ppf(alpha) * sigma / E)**2)
 
+    # sample multiple times and count how many times the  difference between
+    # sample mean and population mean are less than E
+    nOut = 0
+    for cnt in range(nDraw):
+        sample = np.random.choice(population, size = n)
+        if sample.mean() - mu < E:
+            nOut = nOut + 1
+    print('Using a sample size n = {0},'.format(n))
+    print('    the number of sample means that differ from population mean by less than {0}'
+        .format(E) + ' is {0}'.format(nOut))
 
+    # find sample size so that maximum deviation from sample mean and
+    # population mean is no less than E
+    E = 0.8
+    n = math.ceil((stats.norm.ppf(1 - alpha) * sigma / E)**2)
 
-    #plt.show()
+    # sample multiple times and count how many times the  difference between
+    # sample mean and population mean are less than E
+    nOut = 0
+    for cnt in range(nDraw):
+        sample = np.random.choice(population, size = n)
+        if sample.mean() - mu > E:
+            nOut = nOut + 1
+    print('Using a sample size n = {0},'.format(n))
+    print('    the number of sample means that differ from population mean by more than {0}'
+        .format(E) + ' is {0}'.format(nOut))
+    print('')
+
+    plt.show()
