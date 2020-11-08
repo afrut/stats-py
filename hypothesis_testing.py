@@ -54,7 +54,7 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     alpha = 0.05
     mu0 = 175
-    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sigma)
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sigma/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = {0:.5} <= x <= {1:.5}, alpha = {2:.2}'.format(xlo, xhi, alpha))
     if sampmean < xlo or sampmean > xhi:
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 180
-    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sigma)
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sigma/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = {0:.5} <= x <= {1:.5}, alpha = {2:.2}'.format(xlo, xhi, alpha))
     if sampmean < xlo or sampmean > xhi:
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     alpha = 0.05
     mu0 = 175
-    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sampstd = sampstd)
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sampstd = sampstd/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = {0:.5} <= x <= {1:.5}, alpha = {2:.2}'.format(xlo, xhi, alpha))
     if sampmean < xlo or sampmean > xhi:
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 180
-    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sampstd = sampstd)
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sampstd = sampstd/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = {0:.5} <= x <= {1:.5}, alpha = {2:.2}'.format(xlo, xhi, alpha))
     if sampmean < xlo or sampmean > xhi:
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     alpha = 0.05
     mu0 = 175
-    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sigma)
+    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sigma/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x >= {0:.5} , alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 180
-    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sigma)
+    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sigma/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x >= {0:.5}, alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     alpha = 0.05
     mu0 = 175
-    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sampstd = sampstd)
+    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sampstd = sampstd/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x >= {0:.5} , alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 180
-    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sampstd = sampstd)
+    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sampstd = sampstd/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x >= {0:.5}, alpha = {1:.2}'.format(xlo, alpha))
     if sampmean < xlo:
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     alpha = 0.05
     mu0 = 175
-    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sigma)
+    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sigma/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x =< {0:.5} , alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 165
-    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sigma)
+    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sigma/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x =< {0:.5}, alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
@@ -174,7 +174,7 @@ if __name__ == '__main__':
     print('----------------------------------------------------------------------')
     alpha = 0.05
     mu0 = 175
-    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sampstd = sampstd)
+    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sampstd = sampstd/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x =< {0:.5} , alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 165
-    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sampstd = sampstd)
+    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sampstd = sampstd/math.sqrt(n))
     print('Sample mean = {0:.5}'.format(sampmean))
     print('Confidence Interval = x =< {0:.5}, alpha = {1:.2}'.format(xhi, alpha))
     if sampmean > xhi:
@@ -283,4 +283,6 @@ if __name__ == '__main__':
 
     plt.show()
 
-    # TODO: add sample size calculations
+    # TODO: add error types
+    # TODO: add sample size calculations for type 2 error
+    # TODO: add pvalues
