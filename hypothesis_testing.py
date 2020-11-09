@@ -220,7 +220,7 @@ if __name__ == '__main__':
     # two-sided hypothesis test
     # ----------------------------------------------------------------------
     mu0 = 0.2
-    xlo, xhi = twoTail(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sampstd)
     print('Two-sided confidence interval = {0:.4} <= x <= {1:.4}'.format(xlo, xhi))
     if psamp < xlo or psamp > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 != {0}'.format(mu0))
@@ -229,7 +229,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 0.4
-    xlo, xhi = twoTail(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sampstd)
     print('Two-sided confidence interval = {0:.4} <= x <= {1:.4}'.format(xlo, xhi))
     if psamp < xlo or psamp > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 != {0}'.format(mu0))
@@ -241,7 +241,7 @@ if __name__ == '__main__':
     # one-sided lower-bound hypothesis test
     # ----------------------------------------------------------------------
     mu0 = 0.2
-    xlo = oneTailLo(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sampstd)
     print('One-sided lower-bound confidence interval = x >= {0:.4}'.format(xlo))
     if psamp < xlo:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
@@ -250,7 +250,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 0.4
-    xlo = oneTailLo(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    xlo = ci.oneTailLo(alpha, n = n, sampmean = mu0, sigma = sampstd)
     print('One-sided lower-bound confidence interval = x >= {0:.4}'.format(xlo))
     if psamp < xlo:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 < {0}'.format(mu0))
@@ -262,7 +262,7 @@ if __name__ == '__main__':
     # one-sided upper-bound hypothesis test
     # ----------------------------------------------------------------------
     mu0 = 0.2
-    xhi = oneTailHi(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sampstd)
     print('One-sided upper-bound confidence interval = x <= {0:.4}'.format(xhi))
     if psamp > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
@@ -271,7 +271,7 @@ if __name__ == '__main__':
     print('')
 
     mu0 = 0.05
-    xhi = oneTailHi(alpha, n = n, sampmean = mu0, sigma = sampstd)
+    xhi = ci.oneTailHi(alpha, n = n, sampmean = mu0, sigma = sampstd)
     print('One-sided upper-bound confidence interval = x <= {0:.4}'.format(xhi))
     if psamp > xhi:
         print('Reject H0: mu0 = {0} in favor of Ha: mu0 > {0}'.format(mu0))
@@ -283,6 +283,78 @@ if __name__ == '__main__':
 
     plt.show()
 
-    # TODO: add error types
+    # ----------------------------------------------------------------------
+    # Visualize Type 2 Error. NOTE: It is the area under the distribution
+    # centered at mua that falls in the acceptance region of the distribution
+    # centered at mu0.
+    # ----------------------------------------------------------------------
+    n = 20
+    sample = np.random.choice(population, size = n)
+    mu0 = 175
+    mua = 179
+    xmin = min(mu0, mua) - (5 * sigma / math.sqrt(n))
+    xmax = max(mu0, mua) + (5 * sigma / math.sqrt(n))
+    x = np.linspace(xmin, xmax, 500)
+    y0 = stats.norm.pdf(x, loc = mu0, scale = sigma/math.sqrt(n))
+    ya = stats.norm.pdf(x, loc = mua, scale = sigma/math.sqrt(n))
+    ymin = min(y0.min(), ya.min())
+    ymax = max(y0.max(), ya.max())
+
+    # plot both distributions
+    fig, ax = plots.scatter(x, y0
+        ,ylim = (0, max(y0.max(), ya.max()))
+        ,xlabel = 'height'
+        ,ylabel = 'f(x)'
+        ,markersize = 0
+        ,linewidth = 2
+        ,color = plots.BLUE)
+    plots.scatter(x, ya
+        ,fig = fig
+        ,ax = ax
+        ,ylim = (0, max(y0.max(), ya.max()))
+        ,xlabel = 'height'
+        ,ylabel = 'f(x)'
+        ,markersize = 0
+        ,linewidth = 2
+        ,color = plots.RED)
+
+    # find the acceptance region and fill it
+    xlo, xhi = ci.twoTail(alpha, n = n, sampmean = mu0, sigma = sigma / math.sqrt(n))
+    idx = np.multiply(x > xlo, x < xhi)
+    xaccept = x[idx]
+    ax.fill_between(xaccept, y0[idx], color = plots.BLUE)
+
+    # find the type 2 error region
+    idx = x < xhi
+    xt2 = x[idx]
+    ax.fill_between(xt2, ya[idx], color = plots.RED, zorder = 3)
+
+    # plot both means
+    ax.plot(np.array([mu0, mu0]), np.array([0, ymax])
+        ,markersize = 0
+        ,linewidth = 2
+        ,color = plots.LIGHT_BLUE
+        ,linestyle = 'dashed')
+    ax.plot(np.array([mua, mua]), np.array([0, ymax])
+        ,markersize = 0
+        ,linewidth = 2
+        ,color = plots.LIGHT_RED
+        ,linestyle = 'dashed')
+
+    legend =\
+    [
+         mpl.lines.Line2D([0], [0], color = plots.BLUE, linewidth = 2, label = 'Null Distribution')
+        ,mpl.lines.Line2D([0], [0], color = plots.RED, linewidth = 2, label = 'Alternative Distribution')
+        ,mpl.lines.Line2D([0], [0], color = plots.LIGHT_BLUE, linewidth = 2, linestyle = 'dashed', label = 'mu0 = {0}'.format(mu0))
+        ,mpl.lines.Line2D([0], [0], color = plots.LIGHT_RED, linewidth = 2, linestyle = 'dashed', label = 'mua = {0}'.format(mua))
+        ,mpl.patches.Patch(facecolor = plots.BLUE, label = '{0}% Probability Interval'.format(int((1 - alpha) * 100)))
+        ,mpl.patches.Patch(facecolor = plots.RED, label = 'Probability of Type 2 Error')
+    ]
+    ax.legend(handles = legend)
+
+    ax.set_title('Area Representing Probability of Type 2 Error')
+    fig.tight_layout()
+
     # TODO: add sample size calculations for type 2 error
     # TODO: add pvalues
+    plt.show()
