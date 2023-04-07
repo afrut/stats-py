@@ -96,7 +96,6 @@ def oneTailPvalueHi(n, mu0, sampmean, sigma = None, sampstd = None):
         ret = 1 - stats.t.cdf(sampmean, df = n - 1, loc = mu0, scale = sampstd/math.sqrt(n))
     return ret
 
-
 if __name__ == '__main__':
     sp.call('cls', shell = True)
     il.reload(plots)
@@ -569,9 +568,5 @@ if __name__ == '__main__':
     else:
         print('Fail to reject H0: mu0 = {0}'.format(mu0))
     print('')
-
-
-
-    # TODO: add pvalues
 
     plt.show()
